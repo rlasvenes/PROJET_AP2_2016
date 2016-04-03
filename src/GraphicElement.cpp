@@ -6,11 +6,9 @@ GraphicElement::GraphicElement()
 
 }
 
-GraphicElement::GraphicElement(sf::Texture & image, int x, int y, int w, int h)
+GraphicElement::GraphicElement(sf::Texture & image, int x, int y, int w, int h) // hérite de sf::Sprite, donc x et y = coord du sprite
 {
-    this->setPosition((sf::Vector2f(x, y)));
     this->setTexture(image);
-
     this->setPosition(x, y);
 
     _w = w;
