@@ -1,9 +1,10 @@
 #ifndef BALL_H
 #define BALL_H
 
-#include <View.h>
+#include "View.h"
+#include "MovableElement.h"
 
-class Ball
+class Ball : public MovableElement
 {
 
 public:
@@ -11,6 +12,7 @@ public:
     Ball(int x, int y, int w, int h, int dx, int dy);
 
     void move();
+    void stop();
     void jump();
 
     void setDeltaX(int deltaX);
@@ -19,8 +21,14 @@ public:
     int getPositionX() const;
     int getPositionY() const;
 
+    // TEST CLOCK
+
+    sf::Clock m_clock;
+    float _value;
+
+    //===============
+
 private:
-    // Point m_pos;
 
     int _x;
     int _y;

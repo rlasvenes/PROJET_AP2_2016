@@ -8,7 +8,8 @@ SOURCES += main.cpp \
     Model.cpp \
     Ball.cpp \
     GraphicElement.cpp \
-    TcpClient.cpp
+    TcpClient.cpp \
+    MovableElement.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -18,7 +19,8 @@ HEADERS += \
     Model.h \
     Ball.h \
     GraphicElement.h \
-    TcpClient.h
+    TcpClient.h \
+    MovableElement.h
 
 LIBS           += -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
 QMAKE_CXXFLAGS += -std=c++11 -Wall -Wextra

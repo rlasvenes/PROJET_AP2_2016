@@ -17,6 +17,7 @@ View::View(int w, int h)
     : _w(w),_h(h)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close);
+    _window->setFramerateLimit(60);
 
     int screen_width = (sf::VideoMode::getDesktopMode().width - w)/2;
     int screen_height = (sf::VideoMode::getDesktopMode().height - h)/2;
@@ -41,7 +42,8 @@ View::View(int w, int h)
         exit(EXIT_FAILURE);
     } else {
 
-        _ballElm = new GraphicElement(_ball, 100, 450, 0.1 ,0.1);
+        _ballElm = new GraphicElement(_ball, 50, 450, 50 ,50);
+
         _ballElm->resize(50, 50);
 
         _ball.setSmooth(true);
@@ -52,6 +54,7 @@ View::View(int w, int h)
         std::cout << "ERREUR LORS DU CHARGEMENT DE 8_bit_font !" << std::endl;
 
     _texte.setFont(_font);
+
     std::string m_IP = "IP = " + sf::IpAddress::getLocalAddress().toString();
     std::string IP = sf::IpAddress::getPublicAddress().toString();
     _texte.setString(m_IP);
@@ -115,6 +118,7 @@ bool View::treatEvents(){
             if ((event.type == sf::Event::Closed) ||
                     ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))) {
                 _window->close();
+
                 result = false;
             }
 
@@ -141,6 +145,26 @@ bool View::treatEvents(){
                 }
                 _model->getBallPosition(x, y);
                 _ballElm->setPosition(x, y);
+            }
+            else if (sf::Event::KeyReleased)
+            {
+                switch (event.key.code) {
+
+                case sf::Keyboard::Left :
+                    _model->stopBall();
+                    break;
+
+                case sf::Keyboard::Right:
+                    _model->stopBall();
+                    break;
+
+                case sf::Keyboard::Space :
+                    //
+                    break;
+
+                default:
+                    break;
+                }
             }
         }
     }

@@ -11,16 +11,19 @@ class GraphicElement : public sf::Sprite
 {
 
 private:
+
     int _w;
     int _h;
 
 public:
+
     GraphicElement();
     GraphicElement(sf::Texture & image, int x, int y, int w, int h);
 
     void draw(sf::RenderWindow * window);
     void resize(int w, int h);
 
+    void synchronize(); // à implémenter (qui va se charger des déplacements de la balle et du saut
 };
 
 #endif // GRAPHICELEMENT_H

@@ -21,6 +21,7 @@ public:
     void getBallPosition(int &x, int &y);
 
     void moveBall(bool left);
+    void stopBall();
     void jumpBall();
 
 };

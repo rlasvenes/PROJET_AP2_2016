@@ -1,6 +1,9 @@
 #include "Ball.h"
 #define SOL 500
 
+
+const float G = 1.5;
+
 Ball::Ball()
     : _x(0)
     , _y(0)
@@ -15,6 +18,7 @@ Ball::Ball(int x, int y, int w, int h, int dx, int dy)
     , _width(w)
     , _deltaX(dx)
     , _deltaY(dy)
+    , _value(100)
 {
 
 }
@@ -32,8 +36,12 @@ void Ball::move()
 
 void Ball::jump()
 {
-    do
-    {
-        _y -= _deltaY;
-    } while ( _y < SOL);
+   // p = m * g
+
+}
+
+
+void Ball::stop()
+{
+    this->setDeltaX(0);
 }

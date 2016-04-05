@@ -34,6 +34,7 @@ void Model::getBallPosition(int &x, int &y)
 void Model::moveBall(bool left)
 {
     switch (left) {
+
     case true:
         _ball->setDeltaX(5);
         _ball->move();
@@ -50,6 +51,11 @@ void Model::moveBall(bool left)
         break;
     }
 
+}
+
+void Model::stopBall()
+{
+    this->_ball->stop();
 }
 
 void Model::jumpBall()
