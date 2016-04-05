@@ -8,12 +8,14 @@
 #include "Model.h"
 #include "GraphicElement.h"
 #include "TcpClient.h"
+#include "Menu.h"
 
 const std::string BACKGROUND_IMAGE = "../img/city.png";
 const std::string BALL_IMAGE = "../img/ball.png";
 
 class Model;
 class GraphicElement;
+class Menu;
 
 class View {
 
@@ -22,6 +24,7 @@ private:
     int _w, _h;
 
     sf::RenderWindow * _window;
+
     Model * _model;
 
     sf::Texture _background;
@@ -41,6 +44,8 @@ private:
     sf::Font _font;
     sf::Text _texte;
 
+    Menu * _menu;
+
 public:
 
     View(int w, int h);
@@ -51,8 +56,6 @@ public:
     bool treatEvents();
 
     // TESTS
-
-
 
 };
 #endif

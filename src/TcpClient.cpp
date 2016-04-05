@@ -40,4 +40,5 @@ void TcpClient::sendData(const void * data, std::size_t size)
 std::string TcpClient::receivedData(void *data, std::size_t size, std::size_t &received)
 {
     _socket.receive(data, size, received);
+    // return this;
 }

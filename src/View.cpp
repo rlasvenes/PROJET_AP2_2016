@@ -2,6 +2,7 @@
 #include "Model.h"
 #include "Ball.h"
 #include "GraphicElement.h"
+#include "Menu.h"
 
 #include <fstream>
 
@@ -19,10 +20,12 @@ View::View(int w, int h)
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close);
     _window->setFramerateLimit(60);
 
+    // DÉBUT centrer écran
     int screen_width = (sf::VideoMode::getDesktopMode().width - w)/2;
     int screen_height = (sf::VideoMode::getDesktopMode().height - h)/2;
 
     _window->setPosition(sf::Vector2i(screen_width, screen_height));
+    //FIN centrer écran
 
     if (!_background.loadFromFile(BACKGROUND_IMAGE)) {
         std::cerr << "ERROR when loading image file: "
@@ -71,6 +74,8 @@ View::View(int w, int h)
 
 // ================================= FIN TESTS ==================================
 
+    _menu = new Menu(600, 500, (_window->getSize().x) / 2, (_window->getSize().y) / 2);
+
 }
 
 //=======================================
@@ -99,6 +104,8 @@ void View::draw(){
     _ballElm->draw(_window);
 
     _window->draw(_texte);
+    _menu->draw(_window);
+
 
     _window->display();
 }
@@ -143,29 +150,32 @@ bool View::treatEvents(){
                 default:
                     break;
                 }
+
+                if (sf::Event::KeyReleased)
+                {
+                    switch (event.key.code) {
+
+                    case sf::Keyboard::Left :
+                        _model->stopBall();
+                        break;
+
+                    case sf::Keyboard::Right:
+                        _model->stopBall();
+                        break;
+
+                    case sf::Keyboard::Space :
+                        //
+                        break;
+
+                    default:
+                        break;
+                    }
+                }
+
                 _model->getBallPosition(x, y);
                 _ballElm->setPosition(x, y);
             }
-            else if (sf::Event::KeyReleased)
-            {
-                switch (event.key.code) {
 
-                case sf::Keyboard::Left :
-                    _model->stopBall();
-                    break;
-
-                case sf::Keyboard::Right:
-                    _model->stopBall();
-                    break;
-
-                case sf::Keyboard::Space :
-                    //
-                    break;
-
-                default:
-                    break;
-                }
-            }
         }
     }
     return result;
