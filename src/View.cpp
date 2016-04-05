@@ -27,37 +27,24 @@ View::View(int w, int h)
     _window->setPosition(sf::Vector2i(screen_width, screen_height));
     //FIN centrer écran
 
-    if (!_background.loadFromFile(BACKGROUND_IMAGE)) {
-        std::cerr << "ERROR when loading image file: "
-                  << BACKGROUND_IMAGE << std::endl;
-        exit(EXIT_FAILURE);
-
-    } else {
-        _backgroundSprite.setTexture(_background);
-        _backgroundSprite.setPosition(sf::Vector2f(0.f,0.f));
-    }
-
-    // ------------ Faire méthode load_sprite() -----------------------------------------------
+    loadSprite(_background, _backgroundSprite, BACKGROUND_IMAGE); // YESSSSS !!
 
     if (!_ball.loadFromFile(BALL_IMAGE)) {
         std::cerr << "ERROR when loading image file: "
                   << BALL_IMAGE << std::endl;
         exit(EXIT_FAILURE);
     } else {
-
         _ballElm = new GraphicElement(_ball, 50, 450, 50 ,50);
-
-        _ballElm->resize(50, 50);
-
-        _ball.setSmooth(true);
     }
 
-// ================================ DÉBUT TESTS ================================
+    // ================================ DÉBUT TESTS ================================
     if (!_font.loadFromFile("../fonts/8_bit_font2.ttf"))
         std::cout << "ERREUR LORS DU CHARGEMENT DE 8_bit_font !" << std::endl;
 
     _texte.setFont(_font);
     _getTime.setFont(_font);
+
+    _getTime.setPosition(40, 25);
 
     std::string m_IP = "IP = " + sf::IpAddress::getLocalAddress().toString();
     std::string IP = sf::IpAddress::getPublicAddress().toString();
@@ -74,13 +61,30 @@ View::View(int w, int h)
     _texte.setString(_texte.getString() + " ; Port = " + _it);
     _texte.setPosition((w/2) - ((_texte.getString().getSize())/2)*(_texte.getCharacterSize() + 9.5)/2, (h/2) + _texte.getCharacterSize());
 
-        // test class TcpClient
+    // test class TcpClient
 
 
-// ================================= FIN TESTS ==================================
+    // ================================= FIN TESTS ==================================
 
     _menu = new Menu(600, 500, (_window->getSize().x) / 2, (_window->getSize().y) / 2);
 
+}
+
+//=======================================
+// Chargement des sprites
+//=======================================
+sf::Sprite *View::loadSprite(sf::Texture & texture, sf::Sprite & sprite, const std::string & path)
+{
+    if (! texture.loadFromFile(path))
+    {
+        std::cerr << "ERREUR LORS DU CHARGEMENT DU SPRITE : " << path << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        sprite.setTexture(texture);
+        return & sprite;
+    }
 }
 
 //=======================================
@@ -129,7 +133,7 @@ bool View::treatEvents(){
         while (_window->pollEvent(event)) {
 
             _time = _clock.getElapsedTime();
-            _getTime.setString("[ " + std::to_string((int) _time.asSeconds()) + " ]");
+            _getTime.setString("[ time : " + std::to_string((int) _time.asSeconds()) + " ]");
 
             if ((event.type == sf::Event::Closed) ||
                     ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))) {
@@ -139,7 +143,7 @@ bool View::treatEvents(){
             }
 
 
-            if (sf::Event::KeyPressed && !(sf::Event::KeyReleased))
+            if (sf::Event::KeyPressed)
             {
                 int x , y;
                 switch (event.key.code) {
@@ -160,26 +164,26 @@ bool View::treatEvents(){
                     break;
                 }
 
-//                if (sf::Event::KeyReleased)
-//                {
-//                    switch (event.key.code) {
+                //                if (sf::Event::KeyReleased)
+                //                {
+                //                    switch (event.key.code) {
 
-//                    case sf::Keyboard::Left :
-//                        _model->stopBall();
-//                        break;
+                //                    case sf::Keyboard::Left :
+                //                        _model->stopBall();
+                //                        break;
 
-//                    case sf::Keyboard::Right:
-//                        _model->stopBall();
-//                        break;
+                //                    case sf::Keyboard::Right:
+                //                        _model->stopBall();
+                //                        break;
 
-//                    case sf::Keyboard::Space :
-//                        //
-//                        break;
+                //                    case sf::Keyboard::Space :
+                //                        //
+                //                        break;
 
-//                    default:
-//                        break;
-//                    }
-//                }
+                //                    default:
+                //                        break;
+                //                    }
+                //                }
 
                 _model->getBallPosition(x, y);
                 _ballElm->setPosition(x, y);

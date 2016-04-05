@@ -11,6 +11,8 @@ GraphicElement::GraphicElement(sf::Texture & image, int x, int y, int w, int h) 
     this->setTexture(image);
     this->setPosition(x, y);
 
+    this->resize(50, 50);
+
     _w = w;
     _h = h;
 }

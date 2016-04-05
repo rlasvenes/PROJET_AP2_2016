@@ -59,6 +59,9 @@ public:
     void draw();
     bool treatEvents();
 
+    sf::Sprite * loadSprite(sf::Texture &texture, sf::Sprite &sprite, const std::string & path);
+    bool loadFont(sf::Font font, const std::string & path);
+
     // TESTS
 
 };
