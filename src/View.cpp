@@ -57,12 +57,17 @@ View::View(int w, int h)
         std::cout << "ERREUR LORS DU CHARGEMENT DE 8_bit_font !" << std::endl;
 
     _texte.setFont(_font);
+    _getTime.setFont(_font);
 
     std::string m_IP = "IP = " + sf::IpAddress::getLocalAddress().toString();
     std::string IP = sf::IpAddress::getPublicAddress().toString();
     _texte.setString(m_IP);
+
     _texte.setCharacterSize(36);
+    _getTime.setCharacterSize(22);
+
     _texte.setColor(sf::Color::Black);
+    _getTime.setColor(sf::Color::Red);
 
     TcpClient clientTest;
     std::string _it = std::to_string(clientTest.getPortNumber());
@@ -104,7 +109,8 @@ void View::draw(){
     _ballElm->draw(_window);
 
     _window->draw(_texte);
-    _menu->draw(_window);
+    _window->draw(_getTime);
+    //_menu->draw(_window);
 
 
     _window->display();
@@ -122,6 +128,9 @@ bool View::treatEvents(){
         sf::Event event;
         while (_window->pollEvent(event)) {
 
+            _time = _clock.getElapsedTime();
+            _getTime.setString("[ " + std::to_string((int) _time.asSeconds()) + " ]");
+
             if ((event.type == sf::Event::Closed) ||
                     ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))) {
                 _window->close();
@@ -130,7 +139,7 @@ bool View::treatEvents(){
             }
 
 
-            if (sf::Event::KeyPressed)
+            if (sf::Event::KeyPressed && !(sf::Event::KeyReleased))
             {
                 int x , y;
                 switch (event.key.code) {
@@ -151,26 +160,26 @@ bool View::treatEvents(){
                     break;
                 }
 
-                if (sf::Event::KeyReleased)
-                {
-                    switch (event.key.code) {
+//                if (sf::Event::KeyReleased)
+//                {
+//                    switch (event.key.code) {
 
-                    case sf::Keyboard::Left :
-                        _model->stopBall();
-                        break;
+//                    case sf::Keyboard::Left :
+//                        _model->stopBall();
+//                        break;
 
-                    case sf::Keyboard::Right:
-                        _model->stopBall();
-                        break;
+//                    case sf::Keyboard::Right:
+//                        _model->stopBall();
+//                        break;
 
-                    case sf::Keyboard::Space :
-                        //
-                        break;
+//                    case sf::Keyboard::Space :
+//                        //
+//                        break;
 
-                    default:
-                        break;
-                    }
-                }
+//                    default:
+//                        break;
+//                    }
+//                }
 
                 _model->getBallPosition(x, y);
                 _ballElm->setPosition(x, y);

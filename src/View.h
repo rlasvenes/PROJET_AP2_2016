@@ -43,6 +43,10 @@ private:
 
     sf::Font _font;
     sf::Text _texte;
+    sf::Text _getTime;
+
+    sf::Clock _clock;
+    sf::Time _time;
 
     Menu * _menu;
 
