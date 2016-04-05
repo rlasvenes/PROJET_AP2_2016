@@ -30,5 +30,6 @@ void Menu::draw(sf::RenderWindow * window)
 
 void Menu::close()
 {
-
+    // appeller le destructeur
+    // remarque : si menu contient autre objet => parcourir avec itérateur puis appel destructeur objet
 }
