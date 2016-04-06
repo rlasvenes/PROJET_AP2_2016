@@ -66,7 +66,7 @@ View::View(int w, int h)
 
     // ================================= FIN TESTS ==================================
 
-    _menu = new Menu(600, 500, (_window->getSize().x) / 2, (_window->getSize().y) / 2);
+    //_menu = new Menu(600, 500, (_window->getSize().x) / 2, (_window->getSize().y) / 2);
 
 }
 
@@ -114,7 +114,8 @@ void View::draw(){
 
     _window->draw(_texte);
     _window->draw(_getTime);
-    //_menu->draw(_window);
+
+    // _menu->draw(_window); // vérifier si NULL avant d'afficher
 
 
     _window->display();
@@ -127,13 +128,16 @@ bool View::treatEvents(){
 
     bool result = false;
     if(_window->isOpen()){
-        result = true;
+        {
+            _time = _clock.getElapsedTime();
+            _getTime.setString("[ time : " + std::to_string((int) _time.asSeconds()) + " ]");
+            result = true;
+        }
 
         sf::Event event;
         while (_window->pollEvent(event)) {
 
-            _time = _clock.getElapsedTime();
-            _getTime.setString("[ time : " + std::to_string((int) _time.asSeconds()) + " ]");
+
 
             if ((event.type == sf::Event::Closed) ||
                     ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))) {
