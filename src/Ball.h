@@ -13,7 +13,7 @@ public:
 
     void move();
     void stop();
-    void jump();
+    void jump(int value);
 
     void setDeltaX(int deltaX);
     void setDeltaY(int deltaY);

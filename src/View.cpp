@@ -168,7 +168,7 @@ bool View::treatEvents(){
 
                     case sf::Keyboard::Space :
                         _model->getBall()->setDeltaY(-20);
-                        _model->jumpBall();
+                        _model->jumpBall(_model->getBall()->getDeltaY() + 1);
                         break;
 
                     default:

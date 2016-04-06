@@ -23,7 +23,10 @@ Model::~Model(){}
 //=======================================
 // Calcul la prochaine étape
 //=======================================
-void Model::nextStep(){}
+void Model::nextStep(){
+    // delta y += 1
+    // si arrivé sol, bloqué sol
+}
 
 void Model::getBallPosition(int &x, int &y)
 {
@@ -65,6 +68,7 @@ void Model::stopBall()
 
 void Model::jumpBall()
 {
-    _ball->jump(); // à modifier car non fonctionnel
+    _ball->jump(value); // à modifier car non fonctionnel
+    this->_ball->setDeltaY(-20);
 }
 

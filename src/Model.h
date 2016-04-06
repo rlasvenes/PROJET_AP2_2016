@@ -23,7 +23,7 @@ public:
 
     void moveBall(bool left);
     void stopBall();
-    void jumpBall();
+    void jumpBall(int value);
 
 };
 #endif
