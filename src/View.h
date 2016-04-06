@@ -60,6 +60,10 @@ public:
     void draw();
     bool treatEvents();
 
+    void treatKeyState();
+
+    void synchronize();
+
     sf::Sprite * loadSprite(sf::Texture & texture, sf::Sprite &sprite, const std::string & path);
     GraphicElement * loadSprite(sf::Texture & texture, GraphicElement * elem, const std::string & path);
 

@@ -18,7 +18,7 @@ View::View(int w, int h)
     : _w(w),_h(h)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close);
-    _window->setFramerateLimit(60);
+    _window->setFramerateLimit(30);
 
     // DÉBUT centrer écran
     int screen_width = (sf::VideoMode::getDesktopMode().width - w)/2;
@@ -162,61 +162,23 @@ bool View::treatEvents(){
 
                 result = false;
             }
-
-
-            if (sf::Event::KeyPressed)
-            {
-                int x , y;
-                switch (event.key.code) {
-
-                case sf::Keyboard::Left :
-                    _model->moveBall(false);
-                    break;
-
-                case sf::Keyboard::Right:
-                    _model->moveBall(true);
-                    break;
-
-                case sf::Keyboard::Space :
-                    _model->jumpBall();
-                    _menu = new Menu(600, 500, (_window->getSize().x) / 2, (_window->getSize().y) / 2);
-                    break;
-
-                case sf::Keyboard::P :
-                    _menu->~Menu();
-                    break;
-
-                default:
-                    break;
-                }
-
-                //                if (sf::Event::KeyReleased)
-                //                {
-                //                    switch (event.key.code) {
-
-                //                    case sf::Keyboard::Left :
-                //                        _model->stopBall();
-                //                        break;
-
-                //                    case sf::Keyboard::Right:
-                //                        _model->stopBall();
-                //                        break;
-
-                //                    case sf::Keyboard::Space :
-                //                        //
-                //                        break;
-
-                //                    default:
-                //                        break;
-                //                    }
-                //                }
-
-                _model->getBallPosition(x, y);
-                _ballElm->setPosition(x, y);
-            }
-
         }
     }
     return result;
 }
 
+void View::treatKeyState()
+{
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        _model->moveBall(false);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        _model->moveBall(true);
+}
+
+void View::synchronize()
+{
+    int x, y;
+
+    _model->getBallPosition(x, y);
+    _ballElm->setPosition(x, y);
+}
