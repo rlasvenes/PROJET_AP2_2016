@@ -10,7 +10,8 @@ SOURCES += main.cpp \
     GraphicElement.cpp \
     TcpClient.cpp \
     MovableElement.cpp \
-    Menu.cpp
+    Menu.cpp \
+    Audio.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -22,7 +23,8 @@ HEADERS += \
     GraphicElement.h \
     TcpClient.h \
     MovableElement.h \
-    Menu.h
+    Menu.h \
+    Audio.h
 
-LIBS           += -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
+LIBS           += -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 QMAKE_CXXFLAGS += -std=c++11 -Wall -Wextra
