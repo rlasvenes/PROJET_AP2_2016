@@ -31,6 +31,11 @@ void Model::getBallPosition(int &x, int &y)
      y = _ball->getPositionY();
 }
 
+Ball * Model::getBall()
+{
+    return _ball;
+}
+
 void Model::moveBall(bool left)
 {
     switch (left) {

@@ -161,6 +161,20 @@ bool View::treatEvents(){
                 _window->close();
 
                 result = false;
+
+                if (sf::Event::KeyPressed)
+                {
+                    switch (event.key.code) {
+
+                    case sf::Keyboard::Space :
+                        _model->getBall()->setDeltaY(-20);
+                        _model->jumpBall();
+                        break;
+
+                    default:
+                        break;
+                    }
+                }
             }
         }
     }
@@ -171,6 +185,7 @@ void View::treatKeyState()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         _model->moveBall(false);
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         _model->moveBall(true);
 }

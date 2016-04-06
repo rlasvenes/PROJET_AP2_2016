@@ -49,6 +49,8 @@ private:
     sf::Clock _clock;
     sf::Time _time;
 
+    int delatY;
+
     Menu * _menu;
 
 public:

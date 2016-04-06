@@ -19,6 +19,7 @@ public:
     void nextStep();
 
     void getBallPosition(int &x, int &y);
+    Ball * getBall();
 
     void moveBall(bool left);
     void stopBall();

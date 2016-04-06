@@ -18,6 +18,8 @@ public:
     void setDeltaX(int deltaX);
     void setDeltaY(int deltaY);
 
+    int getDeltaY();
+
     int getPositionX() const;
     int getPositionY() const;
 
@@ -30,7 +32,7 @@ public:
 
 private:
 
-    int _x;
+    int _x; // changer par un vector2f
     int _y;
 
     int _width;
