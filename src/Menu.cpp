@@ -6,6 +6,11 @@ Menu::Menu()
     // par défaut, on récupère l
 }
 
+Menu::~Menu()
+{
+    delete & _rect;
+}
+
 Menu::Menu(float width, float height, float x, float y)
     : _posX(x)
     , _posY(y)

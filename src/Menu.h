@@ -20,6 +20,8 @@ public:
     Menu();
     Menu(float width, float height, float x, float y);
 
+    ~Menu();
+
     void draw(sf::RenderWindow * window);
     void close();
 

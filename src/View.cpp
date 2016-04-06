@@ -48,6 +48,7 @@ View::View(int w, int h)
 
     std::string m_IP = "IP = " + sf::IpAddress::getLocalAddress().toString();
     std::string IP = sf::IpAddress::getPublicAddress().toString();
+
     _texte.setString(m_IP);
 
     _texte.setCharacterSize(36);
@@ -87,6 +88,19 @@ sf::Sprite *View::loadSprite(sf::Texture & texture, sf::Sprite & sprite, const s
     }
 }
 
+GraphicElement * View::loadSprite(sf::Texture &texture, GraphicElement * elem, const string &path)
+{
+    if (! texture.loadFromFile(path))
+    {
+        std::cerr << "ERREUR LORS DU CHARGEMENT DU SPRITE : " << path << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        elem = new GraphicElement(texture, 50, 450, 50 ,50);
+    }
+}
+
 //=======================================
 // Destructeur
 //=======================================
@@ -115,7 +129,10 @@ void View::draw(){
     _window->draw(_texte);
     _window->draw(_getTime);
 
-    // _menu->draw(_window); // vérifier si NULL avant d'afficher
+    if (_menu != nullptr)
+    {
+        _menu->draw(_window); // vérifier si NULL avant d'afficher
+    }
 
 
     _window->display();
@@ -162,6 +179,11 @@ bool View::treatEvents(){
 
                 case sf::Keyboard::Space :
                     _model->jumpBall();
+                    _menu = new Menu(600, 500, (_window->getSize().x) / 2, (_window->getSize().y) / 2);
+                    break;
+
+                case sf::Keyboard::P :
+                    _menu->~Menu();
                     break;
 
                 default:
