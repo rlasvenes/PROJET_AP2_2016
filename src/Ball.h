@@ -8,17 +8,18 @@ class Ball : public MovableElement
 {
 
 public:
+
     Ball();
     Ball(int x, int y, int w, int h, int dx, int dy);
 
     void move();
     void stop();
-    void jump(int value);
+    void jump();
 
     void setDeltaX(int deltaX);
     void setDeltaY(int deltaY);
 
-    int getDeltaY();
+    int getDeltaY() const;
 
     int getPositionX() const;
     int getPositionY() const;
@@ -32,7 +33,7 @@ public:
 
 private:
 
-    int _x; // changer par un vector2f
+    int _x;
     int _y;
 
     int _width;

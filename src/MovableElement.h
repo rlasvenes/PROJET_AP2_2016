@@ -1,7 +1,7 @@
 #ifndef MOVABLEELEMENT_H
 #define MOVABLEELEMENT_H
 
-class MovableElement
+class MovableElement // a compléter avec atelier
 {
 
 private:

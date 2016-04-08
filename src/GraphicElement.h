@@ -23,7 +23,7 @@ public:
     void draw(sf::RenderWindow * window);
     void resize(int w, int h);
 
-    void synchronize(); // à implémenter (qui va se charger des déplacements de la balle et du saut
+    void synchronize();
 };
 
 #endif // GRAPHICELEMENT_H

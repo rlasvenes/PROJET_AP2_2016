@@ -9,7 +9,7 @@ private:
 
     sf::TcpSocket _socket;
     unsigned int _portNumber;
-    sf::TcpListener _listener; // for the server only
+    sf::TcpListener _listener;
 
     std::string * _data; // facultatif, donc peut être NULL (pointeur)
     std::size_t received;

@@ -3,9 +3,9 @@
 #include "Ball.h"
 #include "GraphicElement.h"
 #include "Menu.h"
+#include "Audio.h"
 
 #include <fstream>
-
 #include <sstream>
 #include <iostream>
 
@@ -15,19 +15,22 @@ using namespace std;
 // Constructeur
 //=======================================
 View::View(int w, int h)
-    : _w(w),_h(h)
+    : _w(w)
+    , _h(h)
 {
-    _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner", sf::Style::Close);
+    _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner - Projet POO 2015/2016", sf::Style::Close);
     _window->setFramerateLimit(30);
 
-    // DÉBUT centrer écran
+    // _audio->loadSound(SOUND_TEST); // à corriger, fait planter le programme
+
+    _i = _j = _k = 0;
+
     int screen_width = (sf::VideoMode::getDesktopMode().width - w)/2;
     int screen_height = (sf::VideoMode::getDesktopMode().height - h)/2;
 
     _window->setPosition(sf::Vector2i(screen_width, screen_height));
-    //FIN centrer écran
 
-    loadSprite(_background, _backgroundSprite, BACKGROUND_IMAGE); // YESSSSS !!
+    loadSprite(_background, _backgroundSprite, BACKGROUND_IMAGE);
 
     if (!_ball.loadFromFile(BALL_IMAGE)) {
         std::cerr << "ERROR when loading image file: "
@@ -38,6 +41,7 @@ View::View(int w, int h)
     }
 
     // ================================ DÉBUT TESTS ================================
+
     if (!_font.loadFromFile("../fonts/8_bit_font2.ttf"))
         std::cout << "ERREUR LORS DU CHARGEMENT DE 8_bit_font !" << std::endl;
 
@@ -62,12 +66,7 @@ View::View(int w, int h)
     _texte.setString(_texte.getString() + " ; Port = " + _it);
     _texte.setPosition((w/2) - ((_texte.getString().getSize())/2)*(_texte.getCharacterSize() + 9.5)/2, (h/2) + _texte.getCharacterSize());
 
-    // test class TcpClient
-
-
     // ================================= FIN TESTS ==================================
-
-    //_menu = new Menu(600, 500, (_window->getSize().x) / 2, (_window->getSize().y) / 2);
 
 }
 
@@ -88,7 +87,7 @@ sf::Sprite *View::loadSprite(sf::Texture & texture, sf::Sprite & sprite, const s
     }
 }
 
-GraphicElement * View::loadSprite(sf::Texture &texture, GraphicElement * elem, const string &path)
+/*GraphicElement * View::loadSprite(sf::Texture &texture, GraphicElement * elem, const string &path) // à finir
 {
     if (! texture.loadFromFile(path))
     {
@@ -99,14 +98,14 @@ GraphicElement * View::loadSprite(sf::Texture &texture, GraphicElement * elem, c
     {
         elem = new GraphicElement(texture, 50, 450, 50 ,50);
     }
-}
+}*/
 
 //=======================================
 // Destructeur
 //=======================================
 View::~View(){
-    if(_window != NULL) // si la fenetre est ouverte
-        delete _window; // alors on la "détruit"
+    if(_window != NULL)
+        delete _window;
 }
 
 //=======================================
@@ -121,7 +120,7 @@ void View::setModel(Model * model){
 //=======================================
 void View::draw(){
 
-    _window->clear();
+    _window->clear(sf::Color(_i%255, _j%255, _k%255, 0)); // affichage fond ecran dynamique
 
     _window->draw(_backgroundSprite);
     _ballElm->draw(_window);
@@ -129,11 +128,7 @@ void View::draw(){
     _window->draw(_texte);
     _window->draw(_getTime);
 
-    if (_menu != nullptr)
-    {
-        _menu->draw(_window); // vérifier si NULL avant d'afficher
-    }
-
+    _model->drawGraphicPositionBall(400, 10, _font, _window);
 
     _window->display();
 }
@@ -147,37 +142,31 @@ bool View::treatEvents(){
     if(_window->isOpen()){
         {
             _time = _clock.getElapsedTime();
-            _getTime.setString("[ time : " + std::to_string((int) _time.asSeconds()) + " ]");
+            _getTime.setString("[ TIME : " + std::to_string((int) _time.asSeconds()) + " ]");
+
+            _i += 1;    _j += 2;    _k += 3;
+
             result = true;
         }
 
         sf::Event event;
         while (_window->pollEvent(event)) {
 
-
-
             if ((event.type == sf::Event::Closed) ||
                     ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))) {
                 _window->close();
 
                 result = false;
-
-                if (sf::Event::KeyPressed)
-                {
-                    switch (event.key.code) {
-
-                    case sf::Keyboard::Space :
-                        _model->getBall()->setDeltaY(-20);
-                        _model->jumpBall(_model->getBall()->getDeltaY() + 1);
-                        break;
-
-                    default:
-                        break;
-                    }
-                }
             }
-        }
-    }
+
+            if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Space) && _model->getBall()->getPositionY() == 500)
+            {
+                _model->getBall()->setDeltaY(20);
+                _model->jumpBall();
+            }
+
+        } // pollevent
+    } // isOpen
     return result;
 }
 

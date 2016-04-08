@@ -1,16 +1,15 @@
 #include "Model.h"
+
 #include <iostream>
 #include <fstream>
 
 using namespace std;
 
-const int SPEED = 10;
-
 //=======================================
 // Constructeurs
 //=======================================
 Model::Model(int w, int h)
-  :  _w(w), _h(h)
+    :  _w(w), _h(h)
 {
     _ball = new Ball(20, 500, 35, 35, 0, 0);
 }
@@ -23,15 +22,40 @@ Model::~Model(){}
 //=======================================
 // Calcul la prochaine étape
 //=======================================
-void Model::nextStep(){
-    // delta y += 1
-    // si arrivé sol, bloqué sol
+void Model::nextStep()
+{
+    _ball->setDeltaY(_ball->getDeltaY() - 1);
 }
 
 void Model::getBallPosition(int &x, int &y)
 {
-     x = _ball->getPositionX();
-     y = _ball->getPositionY();
+    x = _ball->getPositionX();
+    y = _ball->getPositionY();
+}
+
+void Model::drawGraphicPositionBall(int x, int y, sf::Font & font, sf::RenderWindow * window) // centrage pas parfait
+{
+    int bx, by;
+    this->getBallPosition(bx, by);
+
+    std::string posX = std::to_string(bx);
+    std::string posY = std::to_string(by);
+
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(26);
+    text.setColor(sf::Color::White);
+    text.setString("( " + posX + ", " + posY + " )");
+
+    sf::RectangleShape rect;
+    rect.setFillColor(sf::Color(0, 0, 0, 170));
+    rect.setPosition(x, y);
+    rect.setSize(sf::Vector2f(text.getString().getSize() * (text.getCharacterSize()), 60));
+
+    text.setPosition(rect.getPosition().x + (rect.getSize().x - text.getString().getSize() * text.getCharacterSize()/2) / 2 , rect.getPosition().y + 10);
+
+    window->draw(rect);
+    window->draw(text);
 }
 
 Ball * Model::getBall()
@@ -46,13 +70,11 @@ void Model::moveBall(bool left)
     case true:
         _ball->setDeltaX(5);
         _ball->move();
-        std::cout << "balle position X (true): " << _ball->getPositionX() << std::endl;
         break;
 
     case false:
         _ball->setDeltaX(-5);
         _ball->move();
-        std::cout << "balle position X (false): " << _ball->getPositionX() << std::endl;
         break;
 
     default:
@@ -68,7 +90,7 @@ void Model::stopBall()
 
 void Model::jumpBall()
 {
-    _ball->jump(value); // à modifier car non fonctionnel
-    this->_ball->setDeltaY(-20);
+    _ball->jump();
+    std::cout << "SAUT !! DeltaY = " << _ball->getDeltaY() << std::endl;
 }
 

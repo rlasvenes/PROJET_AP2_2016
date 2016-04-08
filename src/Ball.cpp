@@ -26,7 +26,7 @@ Ball::Ball(int x, int y, int w, int h, int dx, int dy)
 void Ball::setDeltaX(int deltaX) { this->_deltaX = deltaX; }
 void Ball::setDeltaY(int deltaY) { this->_deltaY = deltaY; }
 
-int Ball::getDeltaY() { return _deltaY; }
+int Ball::getDeltaY() const { return _deltaY; }
 
 int Ball::getPositionX() const { return _x; }
 int Ball::getPositionY() const { return _y; }
@@ -36,9 +36,9 @@ void Ball::move()
     _x += _deltaX;
 }
 
-void Ball::jump(int value)
+void Ball::jump()
 {
-    _y += value;
+    _y -= _deltaY;
 }
 
 

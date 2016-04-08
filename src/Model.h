@@ -19,11 +19,13 @@ public:
     void nextStep();
 
     void getBallPosition(int &x, int &y);
+    void drawGraphicPositionBall(int x, int y, sf::Font &font, sf::RenderWindow * window);
+
     Ball * getBall();
 
     void moveBall(bool left);
     void stopBall();
-    void jumpBall(int value);
+    void jumpBall();
 
 };
 #endif
