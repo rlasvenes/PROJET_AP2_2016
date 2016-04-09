@@ -13,8 +13,8 @@
 #include "Audio.h"
 
 const std::string BACKGROUND_IMAGE = "../img/city_3.png";
-const std::string BALL_IMAGE = "../img/ball.png";
-const std::string SOUND_TEST = "../sounds/demon.wav";
+const std::string BALL_IMAGE = "../img/ball3.png";
+const std::string SOUND_TEST = "../sounds/rire.wav";
 
 class Model;
 class GraphicElement;
@@ -51,8 +51,6 @@ private:
     int _i, _j, _k;
 
     Menu * _menu;
-
-    Audio * _audio;
 
 public:
 

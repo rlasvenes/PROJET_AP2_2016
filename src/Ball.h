@@ -24,13 +24,6 @@ public:
     int getPositionX() const;
     int getPositionY() const;
 
-    // TEST CLOCK
-
-    sf::Clock m_clock;
-    float _value;
-
-    //===============
-
 private:
 
     int _x;
@@ -41,6 +34,8 @@ private:
 
     int _deltaX;
     int _deltaY;
+
+    sf::Clock m_clock;
 
 };
 

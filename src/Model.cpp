@@ -11,7 +11,7 @@ using namespace std;
 Model::Model(int w, int h)
     :  _w(w), _h(h)
 {
-    _ball = new Ball(20, 500, 35, 35, 0, 0);
+    _ball = new Ball(50, 500, 70, 70, 0, 0);
 }
 
 //=======================================
@@ -52,7 +52,7 @@ void Model::drawGraphicPositionBall(int x, int y, sf::Font & font, sf::RenderWin
     rect.setPosition(x, y);
     rect.setSize(sf::Vector2f(text.getString().getSize() * (text.getCharacterSize()), 60));
 
-    text.setPosition(rect.getPosition().x + (rect.getSize().x - text.getString().getSize() * text.getCharacterSize()/2) / 2 , rect.getPosition().y + 10);
+    text.setPosition(rect.getPosition().x + (text.getString().getSize() * text.getCharacterSize()) / 5, rect.getPosition().y + 10);
 
     window->draw(rect);
     window->draw(text);

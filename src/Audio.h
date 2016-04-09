@@ -7,14 +7,16 @@ class Audio : public sf::Sound
 {
 private:
 
+    // attributs + buffer, etc...
     sf::SoundBuffer _buffer;
     sf::Sound _sound;
 
 public:
 
     Audio();
+    Audio(const std::string & name);
 
-    Sound * loadSound(const std::string & name);
+    Sound loadSound(const std::string & name);
 };
 
 #endif // AUDIO_H

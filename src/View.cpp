@@ -19,9 +19,7 @@ View::View(int w, int h)
     , _h(h)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner - Projet POO 2015/2016", sf::Style::Close);
-    _window->setFramerateLimit(30);
-
-    // _audio->loadSound(SOUND_TEST); // à corriger, fait planter le programme
+    _window->setFramerateLimit(60);
 
     _i = _j = _k = 0;
 
@@ -37,12 +35,13 @@ View::View(int w, int h)
                   << BALL_IMAGE << std::endl;
         exit(EXIT_FAILURE);
     } else {
-        _ballElm = new GraphicElement(_ball, 50, 450, 50 ,50);
+
+        _ballElm = new GraphicElement(_ball, 100, 450, 70 ,70);
     }
 
     // ================================ DÉBUT TESTS ================================
 
-    if (!_font.loadFromFile("../fonts/8_bit_font2.ttf"))
+    if (!_font.loadFromFile("../fonts/courier_prime.ttf"))
         std::cout << "ERREUR LORS DU CHARGEMENT DE 8_bit_font !" << std::endl;
 
     _texte.setFont(_font);
@@ -55,16 +54,16 @@ View::View(int w, int h)
 
     _texte.setString(m_IP);
 
-    _texte.setCharacterSize(36);
+    _texte.setCharacterSize(26);
     _getTime.setCharacterSize(22);
 
     _texte.setColor(sf::Color::Black);
-    _getTime.setColor(sf::Color::Red);
+    _getTime.setColor(sf::Color::White);
 
     TcpClient clientTest;
     std::string _it = std::to_string(clientTest.getPortNumber());
     _texte.setString(_texte.getString() + " ; Port = " + _it);
-    _texte.setPosition((w/2) - ((_texte.getString().getSize())/2)*(_texte.getCharacterSize() + 9.5)/2, (h/2) + _texte.getCharacterSize());
+    _texte.setPosition((w/2) - ((_texte.getString().getSize())/2)*(_texte.getCharacterSize() + 9.5)/2, (h/2) + _texte.getCharacterSize() + 200);
 
     // ================================= FIN TESTS ==================================
 
@@ -128,7 +127,10 @@ void View::draw(){
     _window->draw(_texte);
     _window->draw(_getTime);
 
-    _model->drawGraphicPositionBall(400, 10, _font, _window);
+    if (_menu != nullptr)
+        _menu->draw(_window);
+
+    _model->drawGraphicPositionBall(350, 10, _font, _window);
 
     _window->display();
 }
@@ -144,7 +146,10 @@ bool View::treatEvents(){
             _time = _clock.getElapsedTime();
             _getTime.setString("[ TIME : " + std::to_string((int) _time.asSeconds()) + " ]");
 
-            _i += 1;    _j += 2;    _k += 3;
+            _i += 1;    _j += 2;    _k += 4;
+
+            _ballElm->rotate(3);
+            _backgroundSprite.setPosition(_backgroundSprite.getPosition().x - 1, _backgroundSprite.getPosition().y);
 
             result = true;
         }
@@ -173,11 +178,25 @@ bool View::treatEvents(){
 void View::treatKeyState()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
         _model->moveBall(false);
+        _ballElm->rotate(1);
+    }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
         _model->moveBall(true);
-}
+        _ballElm->rotate(6);
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+        _menu = new Menu(500, 500, _window->getPosition().x, _window->getPosition().y);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    {
+        _menu = nullptr;
+    }
+}    
 
 void View::synchronize()
 {

@@ -18,7 +18,6 @@ Ball::Ball(int x, int y, int w, int h, int dx, int dy)
     , _width(w)
     , _deltaX(dx)
     , _deltaY(dy)
-    , _value(50)
 {
 
 }
@@ -38,7 +37,8 @@ void Ball::move()
 
 void Ball::jump()
 {
-    _y -= _deltaY;
+    if (_y <= 500)
+        _y -= _deltaY;
 }
 
 
