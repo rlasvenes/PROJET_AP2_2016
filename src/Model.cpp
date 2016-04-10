@@ -94,3 +94,18 @@ void Model::jumpBall()
     std::cout << "SAUT !! DeltaY = " << _ball->getDeltaY() << std::endl;
 }
 
+// ==================================== ELEMENTS / OBSTACLES ====================================================
+
+
+void Model::addElement()
+{
+    MovableElement * elm = new MovableElement();
+    _element.push_back(elm);
+    _new_elements.push_back(elm);
+}
+
+int Model::getSize() const
+{
+    return _element.size();
+}
+

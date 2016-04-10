@@ -127,8 +127,10 @@ void View::draw(){
     _window->draw(_texte);
     _window->draw(_getTime);
 
-    if (_menu != nullptr)
-        _menu->draw(_window);
+    for (auto it : _elementToGraphicElement)
+    {
+       _window->draw(*it.second);
+    }
 
     _model->drawGraphicPositionBall(350, 10, _font, _window);
 
@@ -189,13 +191,12 @@ void View::treatKeyState()
         _ballElm->rotate(6);
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
-        _menu = new Menu(500, 500, _window->getPosition().x, _window->getPosition().y);
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add))
     {
-        _menu = nullptr;
+        _model->addElement();
+        std::cout << "taille : " << _model->getSize() << std::endl;
     }
+
 }    
 
 void View::synchronize()
@@ -204,4 +205,12 @@ void View::synchronize()
 
     _model->getBallPosition(x, y);
     _ballElm->setPosition(x, y);
+
+    for (auto it : _elementToGraphicElement)
+    {
+        GraphicElement * gElm = new GraphicElement(_ball, rand()%100 + 1, rand()%100 +1, 50, 50);
+        _elementToGraphicElement.insert(it).second;
+    }
+
+
 }

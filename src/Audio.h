@@ -16,7 +16,7 @@ public:
     Audio();
     Audio(const std::string & name);
 
-    Sound loadSound(const std::string & name);
+    void loadSound(const std::string & name);
 };
 
 #endif // AUDIO_H

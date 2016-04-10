@@ -5,6 +5,9 @@
 #include <SFML/Network.hpp>
 #include <SFML/Audio.hpp>
 
+#include <vector>
+#include <map>
+
 #include "Ball.h"
 #include "Model.h"
 #include "GraphicElement.h"
@@ -19,7 +22,6 @@ const std::string SOUND_TEST = "../sounds/rire.wav";
 class Model;
 class GraphicElement;
 class Menu;
-class Audio;
 
 class View {
 
@@ -31,6 +33,7 @@ private:
 
     Model * _model;
 
+    // éléments graphique
     sf::Texture _background;
     sf::Sprite _backgroundSprite;
 
@@ -39,17 +42,21 @@ private:
 
     GraphicElement * _ballElm;
 
+    std::map<const MovableElement *, GraphicElement * > _elementToGraphicElement;
+
     // polices + texte + temps
     sf::Font _font;
     sf::Text _texte;
     sf::Text _getTime;
 
+    // horloge
     sf::Clock _clock;
     sf::Time _time;
 
     // affichage + audio + couleur
     int _i, _j, _k;
 
+    // menu + interface
     Menu * _menu;
 
 public:
