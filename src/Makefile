@@ -53,7 +53,8 @@ SOURCES       = main.cpp \
 		TcpClient.cpp \
 		MovableElement.cpp \
 		Menu.cpp \
-		Audio.cpp 
+		Audio.cpp \
+		SlidingBackground.cpp 
 OBJECTS       = main.o \
 		View.o \
 		Model.o \
@@ -62,7 +63,8 @@ OBJECTS       = main.o \
 		TcpClient.o \
 		MovableElement.o \
 		Menu.o \
-		Audio.o
+		Audio.o \
+		SlidingBackground.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -306,7 +308,8 @@ main.o: main.cpp View.h \
 		Model.h \
 		GraphicElement.h \
 		TcpClient.h \
-		Menu.h
+		Menu.h \
+		Audio.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 View.o: View.cpp View.h \
@@ -315,7 +318,8 @@ View.o: View.cpp View.h \
 		Model.h \
 		GraphicElement.h \
 		TcpClient.h \
-		Menu.h
+		Menu.h \
+		Audio.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o View.o View.cpp
 
 Model.o: Model.cpp Model.h \
@@ -324,7 +328,8 @@ Model.o: Model.cpp Model.h \
 		MovableElement.h \
 		GraphicElement.h \
 		TcpClient.h \
-		Menu.h
+		Menu.h \
+		Audio.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Model.o Model.cpp
 
 Ball.o: Ball.cpp Ball.h \
@@ -333,6 +338,7 @@ Ball.o: Ball.cpp Ball.h \
 		GraphicElement.h \
 		TcpClient.h \
 		Menu.h \
+		Audio.h \
 		MovableElement.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Ball.o Ball.cpp
 
@@ -342,7 +348,8 @@ GraphicElement.o: GraphicElement.cpp GraphicElement.h \
 		MovableElement.h \
 		Model.h \
 		TcpClient.h \
-		Menu.h
+		Menu.h \
+		Audio.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o GraphicElement.o GraphicElement.cpp
 
 TcpClient.o: TcpClient.cpp TcpClient.h \
@@ -351,7 +358,8 @@ TcpClient.o: TcpClient.cpp TcpClient.h \
 		MovableElement.h \
 		Model.h \
 		GraphicElement.h \
-		Menu.h
+		Menu.h \
+		Audio.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o TcpClient.o TcpClient.cpp
 
 MovableElement.o: MovableElement.cpp MovableElement.h
@@ -363,7 +371,8 @@ Menu.o: Menu.cpp Menu.h \
 		MovableElement.h \
 		Model.h \
 		GraphicElement.h \
-		TcpClient.h
+		TcpClient.h \
+		Audio.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Menu.o Menu.cpp
 
 Audio.o: Audio.cpp Audio.h \
@@ -375,6 +384,17 @@ Audio.o: Audio.cpp Audio.h \
 		TcpClient.h \
 		Menu.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Audio.o Audio.cpp
+
+SlidingBackground.o: SlidingBackground.cpp SlidingBackground.h \
+		View.h \
+		Ball.h \
+		MovableElement.h \
+		Model.h \
+		GraphicElement.h \
+		TcpClient.h \
+		Menu.h \
+		Audio.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SlidingBackground.o SlidingBackground.cpp
 
 ####### Install
 

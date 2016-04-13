@@ -24,6 +24,10 @@ public:
     int getPositionX() const;
     int getPositionY() const;
 
+    bool isJumping();
+    void setJump(bool value);
+    int maxJump();
+
 private:
 
     int _x;
@@ -34,6 +38,9 @@ private:
 
     int _deltaX;
     int _deltaY;
+
+    bool _jump;
+    int _maxJump;
 
     sf::Clock m_clock;
 

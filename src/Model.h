@@ -23,6 +23,7 @@ public:
 
     void nextStep();
 
+    // balle
     Ball * getBall();
     void getBallPosition(int &x, int &y);
     void drawGraphicPositionBall(int x, int y, sf::Font &font, sf::RenderWindow * window);
@@ -31,6 +32,10 @@ public:
     void stopBall();
     void jumpBall();
 
+    bool isJumping();
+    void setJump(bool value);
+
+    // obstacles
     std::vector<const MovableElement *> getNewMovableElements() const;
     void addElement(); // doit maj _element et _new_elements
     int getSize() const;

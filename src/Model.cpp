@@ -5,34 +5,49 @@
 
 using namespace std;
 
-//=======================================
+//=========================================
 // Constructeurs
-//=======================================
+//=========================================
 Model::Model(int w, int h)
     :  _w(w), _h(h)
 {
     _ball = new Ball(50, 500, 70, 70, 0, 0);
 }
 
-//=======================================
+//=========================================
 // Destructeurs
-//=======================================
+//=========================================
 Model::~Model(){}
 
-//=======================================
+//=========================================
 // Calcul la prochaine étape
-//=======================================
+//=========================================
 void Model::nextStep()
 {
-    _ball->setDeltaY(_ball->getDeltaY() - 1);
+    if (_ball->isJumping())
+    {
+        jumpBall();
+        _ball->setDeltaY(_ball->getDeltaY() - 1);
+
+        if (_ball->getDeltaY() < (_ball->maxJump()) * (-1))
+        {
+            _ball->setJump(false);
+        }
+    }
 }
 
+//=========================================
+// Récupération coordonnées balle
+//=========================================
 void Model::getBallPosition(int &x, int &y)
 {
     x = _ball->getPositionX();
     y = _ball->getPositionY();
 }
 
+//=========================================
+// Affichage graphique coord. balle
+//=========================================
 void Model::drawGraphicPositionBall(int x, int y, sf::Font & font, sf::RenderWindow * window) // centrage pas parfait
 {
     int bx, by;
@@ -58,11 +73,17 @@ void Model::drawGraphicPositionBall(int x, int y, sf::Font & font, sf::RenderWin
     window->draw(text);
 }
 
+//=========================================
+// Récupération de l'objet Ball
+//=========================================
 Ball * Model::getBall()
 {
     return _ball;
 }
 
+//=========================================
+// Fonction de déplacement balle
+//=========================================
 void Model::moveBall(bool left)
 {
     switch (left) {
@@ -83,20 +104,24 @@ void Model::moveBall(bool left)
 
 }
 
-void Model::stopBall()
-{
-    this->_ball->stop();
-}
-
+//=========================================
+// Fonction de saut balle
+//=========================================
 void Model::jumpBall()
 {
     _ball->jump();
     std::cout << "SAUT !! DeltaY = " << _ball->getDeltaY() << std::endl;
 }
 
-// ==================================== ELEMENTS / OBSTACLES ====================================================
 
 
+// ==============================================================================================================
+//                                          ELEMENTS / OBSTACLES
+// ==============================================================================================================
+
+//=========================================
+// Fonction ajout élément déplacable
+//=========================================
 void Model::addElement()
 {
     MovableElement * elm = new MovableElement();
@@ -104,6 +129,9 @@ void Model::addElement()
     _new_elements.push_back(elm);
 }
 
+//=========================================
+// Getter taille du conteneur des éléments
+//=========================================
 int Model::getSize() const
 {
     return _element.size();

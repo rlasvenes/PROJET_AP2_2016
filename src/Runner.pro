@@ -11,7 +11,8 @@ SOURCES += main.cpp \
     TcpClient.cpp \
     MovableElement.cpp \
     Menu.cpp \
-    Audio.cpp
+    Audio.cpp \
+    SlidingBackground.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -24,7 +25,8 @@ HEADERS += \
     TcpClient.h \
     MovableElement.h \
     Menu.h \
-    Audio.h
+    Audio.h \
+    SlidingBackground.h
 
 LIBS           += -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 QMAKE_CXXFLAGS += -std=c++11 -Wall -Wextra

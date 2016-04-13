@@ -129,7 +129,7 @@ void View::draw(){
 
     for (auto it : _elementToGraphicElement)
     {
-       _window->draw(*it.second);
+        _window->draw(*it.second);
     }
 
     _model->drawGraphicPositionBall(350, 10, _font, _window);
@@ -168,12 +168,12 @@ bool View::treatEvents(){
 
             if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Space) && _model->getBall()->getPositionY() == 500)
             {
-                _model->getBall()->setDeltaY(20);
-                _model->jumpBall();
+                _model->getBall()->setJump(true); // _jump = true;
+                _model->getBall()->setDeltaY(_model->getBall()->maxJump());
             }
-
         } // pollevent
     } // isOpen
+
     return result;
 }
 
@@ -208,8 +208,9 @@ void View::synchronize()
 
     for (auto it : _elementToGraphicElement)
     {
-        GraphicElement * gElm = new GraphicElement(_ball, rand()%100 + 1, rand()%100 +1, 50, 50);
-        _elementToGraphicElement.insert(it).second;
+        GraphicElement * elm = new GraphicElement(_ball, rand()%250 + 100, rand()%250 + 100, 50, 50);
+        // _elementToGraphicElement.insert(it)->second;
+        // _elementToGraphicElement; // faut insérer une pair (std::pair)
     }
 
 

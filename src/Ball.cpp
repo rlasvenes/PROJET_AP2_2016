@@ -1,9 +1,6 @@
 #include "Ball.h"
 #define SOL 500
 
-
-const float G = 1.5;
-
 Ball::Ball()
     : _x(0)
     , _y(0)
@@ -18,6 +15,7 @@ Ball::Ball(int x, int y, int w, int h, int dx, int dy)
     , _width(w)
     , _deltaX(dx)
     , _deltaY(dy)
+    , _maxJump(20)
 {
 
 }
@@ -37,13 +35,21 @@ void Ball::move()
 
 void Ball::jump()
 {
-    if (_y <= 500)
-        _y -= _deltaY;
+
+    _y -= _deltaY;
 }
 
-
-void Ball::stop()
+bool Ball::isJumping()
 {
-    this->setDeltaX(0);
-    this->move();
+    return _jump;
+}
+
+void Ball::setJump(bool value)
+{
+    _jump = value;
+}
+
+int Ball::maxJump()
+{
+    return _maxJump;
 }
