@@ -9,6 +9,8 @@
 #include <sstream>
 #include <iostream>
 
+#define PI 3.14159265359
+
 using namespace std;
 
 //=======================================
@@ -63,7 +65,7 @@ View::View(int w, int h)
     TcpClient clientTest;
     std::string _it = std::to_string(clientTest.getPortNumber());
     _texte.setString(_texte.getString() + " ; Port = " + _it);
-    _texte.setPosition((w/2) - ((_texte.getString().getSize())/2)*(_texte.getCharacterSize() + 9.5)/2, (h/2) + _texte.getCharacterSize() + 200);
+    _texte.setPosition((w/2) - ((_texte.getString().getSize())/2)*(_texte.getCharacterSize() + 9.5)/2, (h/2) + _texte.getCharacterSize() + 210);
 
     // ================================= FIN TESTS ==================================
 
@@ -119,7 +121,7 @@ void View::setModel(Model * model){
 //=======================================
 void View::draw(){
 
-    _window->clear(sf::Color(_i%255, _j%255, _k%255, 0)); // affichage fond ecran dynamique
+    _window->clear(sf::Color(abs(255*sin(_i)), abs(255*sin(_j)), abs(255*sin(_k)), 0)); // affichage fond ecran dynamique
 
     _window->draw(_backgroundSprite);
     _ballElm->draw(_window);
@@ -148,7 +150,7 @@ bool View::treatEvents(){
             _time = _clock.getElapsedTime();
             _getTime.setString("[ TIME : " + std::to_string((int) _time.asSeconds()) + " ]");
 
-            _i += 1;    _j += 2;    _k += 4;
+            _i += (2 * PI) / 2000 ; //     _j += (2 * PI) / 220;    _k += (2 * PI) / 240;
 
             _ballElm->rotate(3);
             _backgroundSprite.setPosition(_backgroundSprite.getPosition().x - 1, _backgroundSprite.getPosition().y);
@@ -166,7 +168,7 @@ bool View::treatEvents(){
                 result = false;
             }
 
-            if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Space) && _model->getBall()->getPositionY() == 500)
+            if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Space || event.key.code == sf::Keyboard::Up) && _model->getBall()->getPositionY() == 500)
             {
                 _model->getBall()->setJump(true); // _jump = true;
                 _model->getBall()->setDeltaY(_model->getBall()->maxJump());

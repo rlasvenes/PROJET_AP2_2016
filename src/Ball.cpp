@@ -15,7 +15,7 @@ Ball::Ball(int x, int y, int w, int h, int dx, int dy)
     , _width(w)
     , _deltaX(dx)
     , _deltaY(dy)
-    , _maxJump(20)
+    , _maxJump(30)
 {
 
 }
@@ -39,7 +39,7 @@ void Ball::jump()
     _y -= _deltaY;
 }
 
-bool Ball::isJumping()
+bool Ball::isJumping() const
 {
     return _jump;
 }
@@ -49,7 +49,7 @@ void Ball::setJump(bool value)
     _jump = value;
 }
 
-int Ball::maxJump()
+int Ball::maxJump() const
 {
     return _maxJump;
 }

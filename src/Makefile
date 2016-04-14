@@ -54,7 +54,8 @@ SOURCES       = main.cpp \
 		MovableElement.cpp \
 		Menu.cpp \
 		Audio.cpp \
-		SlidingBackground.cpp 
+		SlidingBackground.cpp \
+		Color.cpp 
 OBJECTS       = main.o \
 		View.o \
 		Model.o \
@@ -64,7 +65,8 @@ OBJECTS       = main.o \
 		MovableElement.o \
 		Menu.o \
 		Audio.o \
-		SlidingBackground.o
+		SlidingBackground.o \
+		Color.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -395,6 +397,17 @@ SlidingBackground.o: SlidingBackground.cpp SlidingBackground.h \
 		Menu.h \
 		Audio.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SlidingBackground.o SlidingBackground.cpp
+
+Color.o: Color.cpp Color.h \
+		View.h \
+		Ball.h \
+		MovableElement.h \
+		Model.h \
+		GraphicElement.h \
+		TcpClient.h \
+		Menu.h \
+		Audio.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Color.o Color.cpp
 
 ####### Install
 

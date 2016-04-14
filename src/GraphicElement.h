@@ -23,7 +23,6 @@ public:
     void draw(sf::RenderWindow * window);
     void resize(int w, int h);
 
-    void synchronize();
 };
 
 #endif // GRAPHICELEMENT_H

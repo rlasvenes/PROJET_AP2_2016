@@ -24,9 +24,9 @@ public:
     int getPositionX() const;
     int getPositionY() const;
 
-    bool isJumping();
+    bool isJumping() const;
     void setJump(bool value);
-    int maxJump();
+    int maxJump() const;
 
 private:
 

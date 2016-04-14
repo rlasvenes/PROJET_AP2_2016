@@ -12,7 +12,8 @@ SOURCES += main.cpp \
     MovableElement.cpp \
     Menu.cpp \
     Audio.cpp \
-    SlidingBackground.cpp
+    SlidingBackground.cpp \
+    Color.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -26,7 +27,8 @@ HEADERS += \
     MovableElement.h \
     Menu.h \
     Audio.h \
-    SlidingBackground.h
+    SlidingBackground.h \
+    Color.h
 
 LIBS           += -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 QMAKE_CXXFLAGS += -std=c++11 -Wall -Wextra

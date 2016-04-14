@@ -54,7 +54,7 @@ private:
     sf::Time _time;
 
     // affichage + audio + couleur
-    int _i, _j, _k;
+    float _i, _j, _k;
 
     // menu + interface
     Menu * _menu;
