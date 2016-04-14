@@ -9,8 +9,8 @@ class SlidingBackground
 {
 private:
 
-    GraphicElement _left;
-    GraphicElement _right;
+    GraphicElement * _left;
+    GraphicElement * _right;
 
     float _width;
     float _height;
@@ -22,6 +22,9 @@ public:
 
     SlidingBackground();
     SlidingBackground(sf::Texture & image, float w, float h, unsigned int speed);
+
+    void draw(sf::RenderWindow *window);
+    void setSpeed(unsigned int value);
 };
 
 #endif // SLIDINGBACKGROUND_H

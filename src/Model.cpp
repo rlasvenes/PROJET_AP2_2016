@@ -48,7 +48,7 @@ void Model::getBallPosition(int &x, int &y)
 //=========================================
 // Affichage graphique coord. balle
 //=========================================
-void Model::drawGraphicPositionBall(int x, int y, sf::Font & font, sf::RenderWindow * window) // centrage pas parfait
+void Model::drawGraphicPositionBall(int x, int y, sf::Font & font, sf::RenderWindow * window)
 {
     int bx, by;
     this->getBallPosition(bx, by);

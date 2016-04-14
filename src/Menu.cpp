@@ -3,7 +3,7 @@
 Menu::Menu()
     : Menu(200, 200, 200, 200)
 {
-    // par défaut, on récupère l
+
 }
 
 Menu::~Menu()
@@ -36,5 +36,4 @@ void Menu::draw(sf::RenderWindow * window)
 void Menu::close()
 {
     // appeller le destructeur
-    // remarque : si menu contient autre objet => parcourir avec itérateur puis appel destructeur objet
 }

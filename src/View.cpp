@@ -19,31 +19,27 @@ using namespace std;
 View::View(int w, int h)
     : _w(w)
     , _h(h)
+    , _slidingSpeed(5)
 {
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner - Projet POO 2015/2016", sf::Style::Close);
     _window->setFramerateLimit(60);
 
     _i = _j = _k = 0;
 
-    int screen_width = (sf::VideoMode::getDesktopMode().width - w)/2;
-    int screen_height = (sf::VideoMode::getDesktopMode().height - h)/2;
+    loadSprite(_background, _backgroundSprite, PATH_BACKGROUND_IMAGE);
+    _slideBackground = new SlidingBackground(_background, _w, _h, _slidingSpeed/2);
 
-    _window->setPosition(sf::Vector2i(screen_width, screen_height));
+    loadSprite(_foreground, _foregroundSprite, PATH_FOREGROUND_IMAGE);
+    _slideForeground = new SlidingBackground(_foreground, _w, _h, _slidingSpeed*2);
 
-    loadSprite(_background, _backgroundSprite, BACKGROUND_IMAGE);
-
-    if (!_ball.loadFromFile(BALL_IMAGE)) {
-        std::cerr << "ERROR when loading image file: "
-                  << BALL_IMAGE << std::endl;
-        exit(EXIT_FAILURE);
-    } else {
-
-        _ballElm = new GraphicElement(_ball, 100, 450, 70 ,70);
-    }
+    loadSprite(_ball, _ballElm, PATH_BALL_IMAGE);
+    _ballElm = new GraphicElement(_ball, 100, 450, 70 ,70);
+    _ballElm->setOrigin(_ballElm->getTexture()->getSize().x/2, _ballElm->getTexture()->getSize().y/2);
+    _ballElm->resize(70, 70);
 
     // ================================ DÉBUT TESTS ================================
 
-    if (!_font.loadFromFile("../fonts/courier_prime.ttf"))
+    if (!_font.loadFromFile(PATH_FONT))
         std::cout << "ERREUR LORS DU CHARGEMENT DE 8_bit_font !" << std::endl;
 
     _texte.setFont(_font);
@@ -74,7 +70,7 @@ View::View(int w, int h)
 //=======================================
 // Chargement des sprites
 //=======================================
-sf::Sprite *View::loadSprite(sf::Texture & texture, sf::Sprite & sprite, const std::string & path)
+sf::Sprite * View::loadSprite(sf::Texture & texture, sf::Sprite & sprite, const std::string & path)
 {
     if (! texture.loadFromFile(path))
     {
@@ -88,7 +84,7 @@ sf::Sprite *View::loadSprite(sf::Texture & texture, sf::Sprite & sprite, const s
     }
 }
 
-/*GraphicElement * View::loadSprite(sf::Texture &texture, GraphicElement * elem, const string &path) // à finir
+GraphicElement & View::loadSprite(sf::Texture &texture, GraphicElement * elem, const string &path) // à finir
 {
     if (! texture.loadFromFile(path))
     {
@@ -98,8 +94,9 @@ sf::Sprite *View::loadSprite(sf::Texture & texture, sf::Sprite & sprite, const s
     else
     {
         elem = new GraphicElement(texture, 50, 450, 50 ,50);
+        return * elem;
     }
-}*/
+}
 
 //=======================================
 // Destructeur
@@ -123,7 +120,9 @@ void View::draw(){
 
     _window->clear(sf::Color(abs(255*sin(_i)), abs(255*sin(_j)), abs(255*sin(_k)), 0)); // affichage fond ecran dynamique
 
-    _window->draw(_backgroundSprite);
+    _slideBackground->draw(_window);
+    _slideForeground->draw(_window);
+
     _ballElm->draw(_window);
 
     _window->draw(_texte);
@@ -150,10 +149,9 @@ bool View::treatEvents(){
             _time = _clock.getElapsedTime();
             _getTime.setString("[ TIME : " + std::to_string((int) _time.asSeconds()) + " ]");
 
-            _i += (2 * PI) / 2000 ; //     _j += (2 * PI) / 220;    _k += (2 * PI) / 240;
+            _i += (2 * PI) / 500 ;      _j += (2 * PI) / 660;    _k += (2 * PI) / 770;
 
             _ballElm->rotate(3);
-            _backgroundSprite.setPosition(_backgroundSprite.getPosition().x - 1, _backgroundSprite.getPosition().y);
 
             result = true;
         }
@@ -211,9 +209,16 @@ void View::synchronize()
     for (auto it : _elementToGraphicElement)
     {
         GraphicElement * elm = new GraphicElement(_ball, rand()%250 + 100, rand()%250 + 100, 50, 50);
-        // _elementToGraphicElement.insert(it)->second;
-        // _elementToGraphicElement; // faut insérer une pair (std::pair)
+        _elementToGraphicElement; // faut insérer une pair (std::pair) ?
     }
 
 
+}
+
+void View::setPositionCenter() const
+{
+    int screen_width = (sf::VideoMode::getDesktopMode().width - _w)/2;
+    int screen_height = (sf::VideoMode::getDesktopMode().height - _h)/2;
+
+    _window->setPosition(sf::Vector2i(screen_width, screen_height));
 }

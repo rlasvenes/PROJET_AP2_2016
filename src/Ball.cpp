@@ -35,7 +35,6 @@ void Ball::move()
 
 void Ball::jump()
 {
-
     _y -= _deltaY;
 }
 

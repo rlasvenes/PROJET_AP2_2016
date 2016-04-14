@@ -17,7 +17,7 @@ public:
 
     Color();
 
-    sf::Color getCurrentColor();
+    sf::Color getCurrentColor(); // retourne les valeurs de rouge, vert, et de bleu (std::cout ??)
 
     // getters + setters
     float getRedValue() const;

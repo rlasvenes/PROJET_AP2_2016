@@ -15,6 +15,8 @@ int main() {
 
     view.setModel(&model);
 
+    view.setPositionCenter();
+
     while (view.treatEvents()) {
 
         view.synchronize();

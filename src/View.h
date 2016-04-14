@@ -11,16 +11,20 @@
 #include "Ball.h"
 #include "Model.h"
 #include "GraphicElement.h"
+#include "SlidingBackground.h"
 #include "TcpClient.h"
 #include "Menu.h"
 #include "Audio.h"
 
-const std::string BACKGROUND_IMAGE = "../img/city_3.png";
-const std::string BALL_IMAGE = "../img/ball3.png";
-const std::string SOUND_TEST = "../sounds/rire.wav";
+const std::string PATH_BACKGROUND_IMAGE = "../img/city_3.png";
+const std::string PATH_FOREGROUND_IMAGE = "../img/city_1.png";
+const std::string PATH_BALL_IMAGE = "../img/ball3.png";
+const std::string PATH_SOUND_TEST = "../sounds/rire.wav";
+const std::string PATH_FONT = "../fonts/courier_prime.ttf";
 
 class Model;
 class GraphicElement;
+class SlidingBackground;
 class Menu;
 
 class View {
@@ -34,11 +38,23 @@ private:
     Model * _model;
 
     // éléments graphique
+
+        // arrière-plan
+    SlidingBackground * _slideBackground;
+
     sf::Texture _background;
     sf::Sprite _backgroundSprite;
 
+        // premier plan
+    SlidingBackground * _slideForeground;
+
+    sf::Texture _foreground;
+    sf::Sprite _foregroundSprite;
+
+        // vitesse de défilement
+    unsigned int _slidingSpeed;
+
     sf::Texture _ball;
-    sf::Sprite _ballSprite;
 
     GraphicElement * _ballElm;
 
@@ -72,8 +88,10 @@ public:
 
     void synchronize();
 
+    void setPositionCenter() const;
+
     sf::Sprite * loadSprite(sf::Texture & texture, sf::Sprite &sprite, const std::string & path);
-    GraphicElement * loadSprite(sf::Texture & texture, GraphicElement * elem, const std::string & path); // à finir (voir .cpp)
+    GraphicElement &loadSprite(sf::Texture & texture, GraphicElement *elem, const std::string & path); // à finir (voir .cpp)
 
     sf::Font * loadFont(sf::Font font, const std::string & path);
 };
