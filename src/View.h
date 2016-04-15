@@ -57,6 +57,7 @@ private:
     sf::Texture _ball;
 
     GraphicElement * _ballElm;
+    GraphicElement * _shadow; // ombre de la balle
 
     std::map<const MovableElement *, GraphicElement * > _elementToGraphicElement;
 

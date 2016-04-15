@@ -21,7 +21,10 @@ View::View(int w, int h)
     , _h(h)
     , _slidingSpeed(5)
 {
-    _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner - Projet POO 2015/2016", sf::Style::Close);
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+
+    _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner - Projet POO 2015/2016", sf::Style::Close, settings);
     _window->setFramerateLimit(60);
 
     _i = _j = _k = 0;
@@ -37,10 +40,16 @@ View::View(int w, int h)
     _ballElm->setOrigin(_ballElm->getTexture()->getSize().x/2, _ballElm->getTexture()->getSize().y/2);
     _ballElm->resize(70, 70);
 
+    _shadow = new GraphicElement(_ball, 50, 525, 70, 70);
+    _shadow->setOrigin(_shadow->getTexture()->getSize().x/2, _shadow->getTexture()->getSize().y/2);
+    _shadow->resize(70, 45);
+    _shadow->setOpacity(50);
+    _shadow->setColor(sf::Color(128, 128, 128, _shadow->getOpacity()));
+
     // ================================ DÉBUT TESTS ================================
 
     if (!_font.loadFromFile(PATH_FONT))
-        std::cout << "ERREUR LORS DU CHARGEMENT DE 8_bit_font !" << std::endl;
+        std::cout << "ERREUR LORS DU CHARGEMENT DE " << PATH_FONT << std::endl;
 
     _texte.setFont(_font);
     _getTime.setFont(_font);
@@ -123,6 +132,7 @@ void View::draw(){
     _slideBackground->draw(_window);
     _slideForeground->draw(_window);
 
+    _shadow->draw(_window);
     _ballElm->draw(_window);
 
     _window->draw(_texte);
@@ -153,6 +163,29 @@ bool View::treatEvents(){
 
             _ballElm->rotate(3);
 
+            if (_model->getBall()->isJumping())
+            {
+                if (_model->getBall()->getDeltaY() > 0)
+                {
+                    _shadow->resize(_shadow->getSizeWidth() + 3,
+                                    _shadow->getSizeHeight() + 3);
+                    _shadow->setOpacity(_shadow->getOpacity() - 1);
+                    _shadow->setColor(sf::Color(128, 128, 128, _shadow->getOpacity()));
+                }
+                else if (_model->getBall()->getDeltaY() < 0)
+                {
+                    _shadow->resize(_shadow->getSizeWidth() - 3,
+                                    _shadow->getSizeHeight() - 3);
+                    _shadow->setOpacity(_shadow->getOpacity() + 2);
+                    _shadow->setColor(sf::Color(128, 128, 128, _shadow->getOpacity() ));
+                }
+            }
+            else
+            {
+               _shadow->setOpacity(50);
+               _shadow->resize(70, 45);
+            }
+
             result = true;
         }
 
@@ -171,6 +204,7 @@ bool View::treatEvents(){
                 _model->getBall()->setJump(true); // _jump = true;
                 _model->getBall()->setDeltaY(_model->getBall()->maxJump());
             }
+
         } // pollevent
     } // isOpen
 
@@ -196,6 +230,8 @@ void View::treatKeyState()
         _model->addElement();
         std::cout << "taille : " << _model->getSize() << std::endl;
     }
+
+    _shadow->setPosition(_ballElm->getPosition().x, _shadow->getPosition().y);
 
 }    
 

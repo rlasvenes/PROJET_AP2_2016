@@ -4,6 +4,8 @@
 #include "View.h"
 #include "MovableElement.h"
 
+class GraphicElement;
+
 class Ball : public MovableElement
 {
 
@@ -28,6 +30,8 @@ public:
     void setJump(bool value);
     int maxJump() const;
 
+    GraphicElement * getShadow() const;
+
 private:
 
     int _x;
@@ -43,6 +47,7 @@ private:
     int _maxJump;
 
     sf::Clock m_clock;
+    GraphicElement * _shadow;
 
 };
 

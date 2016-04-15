@@ -27,6 +27,7 @@ void Model::nextStep()
     if (_ball->isJumping())
     {
         jumpBall();
+        // faire qqchose avec getShadow()->resize(getScale.x + getDeltaY, ...);
         _ball->setDeltaY(_ball->getDeltaY() - 1);
 
         if (_ball->getDeltaY() < (_ball->maxJump()) * (-1))

@@ -15,6 +15,8 @@ private:
     int _w;
     int _h;
 
+    unsigned int _opacity;
+
 public:
 
     GraphicElement();
@@ -23,6 +25,11 @@ public:
     void draw(sf::RenderWindow * window);
     void resize(int w, int h);
 
+    float getSizeWidth() const;
+    float getSizeHeight() const;
+
+    void setOpacity(unsigned int value);
+    unsigned int getOpacity() const;
 };
 
 #endif // GRAPHICELEMENT_H
