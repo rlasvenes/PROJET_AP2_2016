@@ -16,6 +16,8 @@ private:
     std::vector<MovableElement *> _element;
     std::vector<const MovableElement *> _new_elements;
 
+    bool _pause;
+
 public:
 
     Model(int w, int h);
@@ -39,6 +41,10 @@ public:
     std::vector<const MovableElement *> getNewMovableElements() const;
     void addElement(); // doit maj _element et _new_elements
     int getSize() const;
+
+    // pause
+    bool getPauseState() const;
+    void setPauseState(bool value);
 
 };
 #endif

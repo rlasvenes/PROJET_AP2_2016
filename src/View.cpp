@@ -20,14 +20,13 @@ View::View(int w, int h)
     : _w(w)
     , _h(h)
     , _slidingSpeed(5)
+    , _i(0) , _j(0) , _k(0)
 {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner - Projet POO 2015/2016", sf::Style::Close, settings);
-    _window->setFramerateLimit(60);
-
-    _i = _j = _k = 0;
+    _window->setFramerateLimit(FRAME_LIMIT);
 
     loadSprite(_background, _backgroundSprite, PATH_BACKGROUND_IMAGE);
     _slideBackground = new SlidingBackground(_background, _w, _h, _slidingSpeed/2);
@@ -161,30 +160,13 @@ bool View::treatEvents(){
 
             _i += (2 * PI) / 500 ;      _j += (2 * PI) / 660;    _k += (2 * PI) / 770;
 
-            _ballElm->rotate(3);
+            _ballElm->rotate(3 * !(_model->getPauseState()));
 
-            if (_model->getBall()->isJumping())
-            {
-                if (_model->getBall()->getDeltaY() > 0)
-                {
-                    _shadow->resize(_shadow->getSizeWidth() + 3,
-                                    _shadow->getSizeHeight() + 3);
-                    _shadow->setOpacity(_shadow->getOpacity() - 1);
-                    _shadow->setColor(sf::Color(128, 128, 128, _shadow->getOpacity()));
-                }
-                else if (_model->getBall()->getDeltaY() < 0)
-                {
-                    _shadow->resize(_shadow->getSizeWidth() - 3,
-                                    _shadow->getSizeHeight() - 3);
-                    _shadow->setOpacity(_shadow->getOpacity() + 2);
-                    _shadow->setColor(sf::Color(128, 128, 128, _shadow->getOpacity() ));
-                }
-            }
-            else
-            {
-               _shadow->setOpacity(50);
-               _shadow->resize(70, 45);
-            }
+            if (!_model->getPauseState())
+                updateBallShadow(_shadow);
+
+            _slideBackground->setSpeed(2 * !(_model->getPauseState())); // si en pause, alors : x 0
+            _slideForeground->setSpeed(6 * !(_model->getPauseState()));
 
             result = true;
         }
@@ -193,16 +175,23 @@ bool View::treatEvents(){
         while (_window->pollEvent(event)) {
 
             if ((event.type == sf::Event::Closed) ||
-                    ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))) {
+               ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)))
+            {
                 _window->close();
-
                 result = false;
             }
 
-            if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Space || event.key.code == sf::Keyboard::Up) && _model->getBall()->getPositionY() == 500)
+            if (((event.type == sf::Event::KeyPressed) &&
+                (event.key.code == sf::Keyboard::Space || event.key.code == sf::Keyboard::Up) &&
+                _model->getBall()->getPositionY() == 500) && !_model->getPauseState()) // 500 == SOL
             {
-                _model->getBall()->setJump(true); // _jump = true;
+                _model->getBall()->setJump(true);
                 _model->getBall()->setDeltaY(_model->getBall()->maxJump());
+            }
+
+            if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::P))
+            {
+                _model->setPauseState(!_model->getPauseState());
             }
 
         } // pollevent
@@ -213,13 +202,13 @@ bool View::treatEvents(){
 
 void View::treatKeyState()
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) && !_model->getPauseState())
     {
         _model->moveBall(false);
         _ballElm->rotate(1);
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) && !_model->getPauseState())
     {
         _model->moveBall(true);
         _ballElm->rotate(6);
@@ -247,8 +236,6 @@ void View::synchronize()
         GraphicElement * elm = new GraphicElement(_ball, rand()%250 + 100, rand()%250 + 100, 50, 50);
         _elementToGraphicElement; // faut insérer une pair (std::pair) ?
     }
-
-
 }
 
 void View::setPositionCenter() const
@@ -257,4 +244,30 @@ void View::setPositionCenter() const
     int screen_height = (sf::VideoMode::getDesktopMode().height - _h)/2;
 
     _window->setPosition(sf::Vector2i(screen_width, screen_height));
+}
+
+void View::updateBallShadow(GraphicElement * element)
+{
+    if (_model->getBall()->isJumping())
+    {
+        if (_model->getBall()->getDeltaY() > 0)
+        {
+            element->resize(element->getSizeWidth() + 3,
+                            element->getSizeHeight() + 3);
+            element->setOpacity(element->getOpacity() - 1);
+            element->setColor(sf::Color(128, 128, 128, element->getOpacity()));
+        }
+        else if (_model->getBall()->getDeltaY() < 0)
+        {
+            element->resize(element->getSizeWidth() - 3,
+                            element->getSizeHeight() - 3);
+            element->setOpacity(element->getOpacity() + 2);
+            element->setColor(sf::Color(128, 128, 128, element->getOpacity() ));
+        }
+    }
+    else
+    {
+       element->setOpacity(50);
+       element->resize(70, 45);
+    }
 }

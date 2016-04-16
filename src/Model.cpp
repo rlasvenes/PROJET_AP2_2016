@@ -10,6 +10,7 @@ using namespace std;
 //=========================================
 Model::Model(int w, int h)
     :  _w(w), _h(h)
+    , _pause(false)
 {
     _ball = new Ball(50, 500, 70, 70, 0, 0);
 }
@@ -24,10 +25,9 @@ Model::~Model(){}
 //=========================================
 void Model::nextStep()
 {
-    if (_ball->isJumping())
+    if (_ball->isJumping() && !getPauseState())
     {
         jumpBall();
-        // faire qqchose avec getShadow()->resize(getScale.x + getDeltaY, ...);
         _ball->setDeltaY(_ball->getDeltaY() - 1);
 
         if (_ball->getDeltaY() < (_ball->maxJump()) * (-1))
@@ -111,9 +111,7 @@ void Model::moveBall(bool left)
 void Model::jumpBall()
 {
     _ball->jump();
-    std::cout << "SAUT !! DeltaY = " << _ball->getDeltaY() << std::endl;
 }
-
 
 
 // ==============================================================================================================
@@ -138,3 +136,12 @@ int Model::getSize() const
     return _element.size();
 }
 
+bool Model::getPauseState() const
+{
+    return _pause;
+}
+
+void Model::setPauseState(bool value)
+{
+    _pause = value;
+}

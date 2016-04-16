@@ -55,7 +55,8 @@ SOURCES       = main.cpp \
 		Menu.cpp \
 		Audio.cpp \
 		SlidingBackground.cpp \
-		Color.cpp 
+		Color.cpp \
+		IntroView.cpp 
 OBJECTS       = main.o \
 		View.o \
 		Model.o \
@@ -66,7 +67,8 @@ OBJECTS       = main.o \
 		Menu.o \
 		Audio.o \
 		SlidingBackground.o \
-		Color.o
+		Color.o \
+		IntroView.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -309,6 +311,7 @@ main.o: main.cpp View.h \
 		MovableElement.h \
 		Model.h \
 		GraphicElement.h \
+		SlidingBackground.h \
 		TcpClient.h \
 		Menu.h \
 		Audio.h
@@ -319,6 +322,7 @@ View.o: View.cpp View.h \
 		MovableElement.h \
 		Model.h \
 		GraphicElement.h \
+		SlidingBackground.h \
 		TcpClient.h \
 		Menu.h \
 		Audio.h
@@ -329,6 +333,7 @@ Model.o: Model.cpp Model.h \
 		Ball.h \
 		MovableElement.h \
 		GraphicElement.h \
+		SlidingBackground.h \
 		TcpClient.h \
 		Menu.h \
 		Audio.h
@@ -338,6 +343,7 @@ Ball.o: Ball.cpp Ball.h \
 		View.h \
 		Model.h \
 		GraphicElement.h \
+		SlidingBackground.h \
 		TcpClient.h \
 		Menu.h \
 		Audio.h \
@@ -349,6 +355,7 @@ GraphicElement.o: GraphicElement.cpp GraphicElement.h \
 		Ball.h \
 		MovableElement.h \
 		Model.h \
+		SlidingBackground.h \
 		TcpClient.h \
 		Menu.h \
 		Audio.h
@@ -360,6 +367,7 @@ TcpClient.o: TcpClient.cpp TcpClient.h \
 		MovableElement.h \
 		Model.h \
 		GraphicElement.h \
+		SlidingBackground.h \
 		Menu.h \
 		Audio.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o TcpClient.o TcpClient.cpp
@@ -373,6 +381,7 @@ Menu.o: Menu.cpp Menu.h \
 		MovableElement.h \
 		Model.h \
 		GraphicElement.h \
+		SlidingBackground.h \
 		TcpClient.h \
 		Audio.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Menu.o Menu.cpp
@@ -383,6 +392,7 @@ Audio.o: Audio.cpp Audio.h \
 		MovableElement.h \
 		Model.h \
 		GraphicElement.h \
+		SlidingBackground.h \
 		TcpClient.h \
 		Menu.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Audio.o Audio.cpp
@@ -404,10 +414,14 @@ Color.o: Color.cpp Color.h \
 		MovableElement.h \
 		Model.h \
 		GraphicElement.h \
+		SlidingBackground.h \
 		TcpClient.h \
 		Menu.h \
 		Audio.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Color.o Color.cpp
+
+IntroView.o: IntroView.cpp IntroView.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o IntroView.o IntroView.cpp
 
 ####### Install
 

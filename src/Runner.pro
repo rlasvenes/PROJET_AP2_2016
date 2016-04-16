@@ -13,7 +13,8 @@ SOURCES += main.cpp \
     Menu.cpp \
     Audio.cpp \
     SlidingBackground.cpp \
-    Color.cpp
+    Color.cpp \
+    IntroView.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -28,7 +29,8 @@ HEADERS += \
     Menu.h \
     Audio.h \
     SlidingBackground.h \
-    Color.h
+    Color.h \
+    IntroView.h
 
 LIBS           += -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 QMAKE_CXXFLAGS += -std=c++11 -Wall -Wextra
