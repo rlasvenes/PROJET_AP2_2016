@@ -1,6 +1,19 @@
 #include "MovableElement.h"
 
 MovableElement::MovableElement()
+    : _slidingSpeed(5)
+    , _x(0)
+    , _y(0)
+
+{
+
+}
+
+MovableElement::MovableElement(int x, int y, int w, int h)
+    : _x(x)
+    , _y(y)
+    , _width(w)
+    , _height(h)
 {
 
 }
@@ -20,3 +33,18 @@ int MovableElement::getPositionY() const { return _y; }
 
 int MovableElement::getDeltaX() const { return _deltaX; }
 int MovableElement::getDeltaY() const { return _deltaY; }
+
+void MovableElement::move()
+{
+    _x += _slidingSpeed;
+}
+
+void MovableElement::setSlidingSpeed(unsigned int value)
+{
+    _slidingSpeed = value;
+}
+
+unsigned int MovableElement::getSlidingSpeed() const
+{
+    return _slidingSpeed;
+}

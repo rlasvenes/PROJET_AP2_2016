@@ -160,7 +160,7 @@ bool View::treatEvents(){
 
             _i += (2 * PI) / 500 ;      _j += (2 * PI) / 660;    _k += (2 * PI) / 770;
 
-            _ballElm->rotate(3 * !(_model->getPauseState()));
+            _ballElm->rotate(3 * !(_model->getPauseState()) * _slidingSpeed);
 
             if (!_model->getPauseState())
                 updateBallShadow(_shadow);
@@ -231,11 +231,13 @@ void View::synchronize()
     _model->getBallPosition(x, y);
     _ballElm->setPosition(x, y);
 
-    for (auto it : _elementToGraphicElement)
+    for (auto it : _model->getNewMovableElements())
     {
-        GraphicElement * elm = new GraphicElement(_ball, rand()%250 + 100, rand()%250 + 100, 50, 50);
-        _elementToGraphicElement; // faut insérer une pair (std::pair) ?
+        GraphicElement * elm = new GraphicElement(_ball, 250, 250, 50, 50);
+        elm->resize(70, 70);
+        _elementToGraphicElement[it] = elm;
     }
+
 }
 
 void View::setPositionCenter() const

@@ -4,7 +4,7 @@
 class MovableElement // a compléter avec atelier
 {
 
-private:
+protected:
 
     int _x;
     int _y;
@@ -14,6 +14,8 @@ private:
 
     int _deltaX;
     int _deltaY;
+
+    unsigned int _slidingSpeed;
 
 public:
 
@@ -30,6 +32,8 @@ public:
     int getPositionY() const;
 
     void move();
+    unsigned int getSlidingSpeed() const;
+    void setSlidingSpeed(unsigned int value);
 };
 
 #endif // MOVABLEELEMENT_H

@@ -123,11 +123,15 @@ void Model::jumpBall()
 //=========================================
 void Model::addElement()
 {
-    MovableElement * elm = new MovableElement();
+    MovableElement * elm = new MovableElement(350, 350, 100, 100);
     _element.push_back(elm);
     _new_elements.push_back(elm);
 }
 
+std::vector<const MovableElement *> Model::getNewMovableElements() const
+{
+    return _new_elements;
+}
 //=========================================
 // Getter taille du conteneur des éléments
 //=========================================

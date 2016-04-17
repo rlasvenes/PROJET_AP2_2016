@@ -20,7 +20,7 @@ const std::string PATH_BACKGROUND_IMAGE = "../img/city_3.png";
 const std::string PATH_FOREGROUND_IMAGE = "../img/city_1.png";
 const std::string PATH_BALL_IMAGE = "../img/ball3.png";
 const std::string PATH_SOUND_TEST = "../sounds/rire.wav";
-const std::string PATH_FONT = "../fonts/courier_prime.ttf";
+const std::string PATH_FONT = "../fonts/8_bit_font2.ttf";
 
 const int FRAME_LIMIT = 60;
 
