@@ -218,6 +218,7 @@ void View::treatKeyState()
     {
         _model->addElement();
         std::cout << "taille : " << _model->getSize() << std::endl;
+        std::cout << "Nouvelle taille : " << _model->getNewMovableElements().size() << std::endl;
     }
 
     _shadow->setPosition(_ballElm->getPosition().x, _shadow->getPosition().y);
@@ -233,10 +234,12 @@ void View::synchronize()
 
     for (auto it : _model->getNewMovableElements())
     {
-        GraphicElement * elm = new GraphicElement(_ball, 250, 250, 50, 50);
+        GraphicElement * elm = new GraphicElement(_ball, it->getPositionX(), it->getPositionY(), 50, 50);
         elm->resize(70, 70);
         _elementToGraphicElement[it] = elm;
     }
+
+
 
 }
 

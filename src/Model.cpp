@@ -35,6 +35,18 @@ void Model::nextStep()
             _ball->setJump(false);
         }
     }
+
+    for (auto it : _element)
+        it->move();
+
+    for (auto it : _new_elements)
+    {
+        if (it->getPositionX() < 0)
+        {
+            std::cout << it << " reached null value !! __" << std::endl;
+        }
+    }
+
 }
 
 //=========================================
@@ -123,7 +135,7 @@ void Model::jumpBall()
 //=========================================
 void Model::addElement()
 {
-    MovableElement * elm = new MovableElement(350, 350, 100, 100);
+    MovableElement * elm = new MovableElement(_w, _h/2, 100, 100);
     _element.push_back(elm);
     _new_elements.push_back(elm);
 }
