@@ -73,6 +73,8 @@ View::View(int w, int h)
 
     // ================================= FIN TESTS ==================================
 
+    _audio = new Audio(PATH_SOUND_TEST);
+
 }
 
 //=======================================
@@ -220,6 +222,9 @@ void View::treatKeyState()
         std::cout << "taille : " << _model->getSize() << std::endl;
         std::cout << "Nouvelle taille : " << _model->getNewMovableElements().size() << std::endl;
     }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+        _audio->play();
 
     _shadow->setPosition(_ballElm->getPosition().x, _shadow->getPosition().y);
 

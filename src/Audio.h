@@ -14,9 +14,12 @@ private:
 public:
 
     Audio();
-    Audio(const std::string & name);
+    Audio(const std::string & name); // name = path en l'occurence
 
     void loadSound(const std::string & name);
+    void play();
+    void pause();
+    void stop();
 };
 
 #endif // AUDIO_H
