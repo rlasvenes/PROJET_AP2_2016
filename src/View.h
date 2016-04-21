@@ -21,6 +21,7 @@ const std::string PATH_FOREGROUND_IMAGE = "../img/city_1.png";
 const std::string PATH_BALL_IMAGE = "../img/ball3.png";
 const std::string PATH_SOUND_TEST = "../sounds/diable.wav";
 const std::string PATH_FONT = "../fonts/8_bit_font2.ttf";
+const std::string PATH_OBSTACLE_IMAGE = "../img/obstacle.png";
 
 const int FRAME_LIMIT = 60;
 
@@ -53,6 +54,10 @@ private:
 
     sf::Texture _foreground;
     sf::Sprite _foregroundSprite;
+
+        // obstacle
+    sf::Texture _obstacle;
+    sf::Sprite _obstacleSprite;
 
         // vitesse de défilement
     unsigned int _slidingSpeed;

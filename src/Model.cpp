@@ -37,14 +37,17 @@ void Model::nextStep()
     }
 
     for (auto it : _element)
+    {
         it->move();
 
-    for (auto it : _new_elements)
-    {
-        if (it->getPositionX() < 0)
+        if ((it->getPositionX() + it->getSizeWidth() < 0))
         {
-            std::cout << it << " reached null value !! __" << std::endl;
+            _element.erase(_element.begin());
+            _new_elements.erase(_new_elements.begin());
         }
+
+        std::cout << "_element.size() = " << _element.size() << std::endl;
+        std::cout << "_new_elements.size() = " << _new_elements.size() << std::endl;
     }
 
 }
@@ -135,9 +138,11 @@ void Model::jumpBall()
 //=========================================
 void Model::addElement()
 {
+
     MovableElement * elm = new MovableElement(_w, _h/2, 100, 100);
     _element.push_back(elm);
     _new_elements.push_back(elm);
+
 }
 
 std::vector<const MovableElement *> Model::getNewMovableElements() const

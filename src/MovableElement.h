@@ -31,6 +31,9 @@ public:
     int getPositionX() const;
     int getPositionY() const;
 
+    float getSizeWidth() const;
+    float getSizeHeight() const;
+
     void move();
     unsigned int getSlidingSpeed() const;
     void setSlidingSpeed(unsigned int value);

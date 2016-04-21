@@ -45,6 +45,8 @@ View::View(int w, int h)
     _shadow->setOpacity(50);
     _shadow->setColor(sf::Color(128, 128, 128, _shadow->getOpacity()));
 
+    loadSprite(_obstacle, _obstacleSprite, PATH_OBSTACLE_IMAGE);
+
     // ================================ DÉBUT TESTS ================================
 
     if (!_font.loadFromFile(PATH_FONT))
@@ -196,6 +198,13 @@ bool View::treatEvents(){
                 _model->setPauseState(!_model->getPauseState());
             }
 
+            if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Add))
+            {
+                _model->addElement();
+                std::cout << "taille : " << _model->getSize() << std::endl; // getSize() = _element.size()
+                std::cout << "Nouvelle taille : " << _model->getNewMovableElements().size() << std::endl;
+            }
+
         } // pollevent
     } // isOpen
 
@@ -216,13 +225,6 @@ void View::treatKeyState()
         _ballElm->rotate(6);
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add))
-    {
-        _model->addElement();
-        std::cout << "taille : " << _model->getSize() << std::endl;
-        std::cout << "Nouvelle taille : " << _model->getNewMovableElements().size() << std::endl;
-    }
-
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
         _audio->play();
 
@@ -239,9 +241,16 @@ void View::synchronize()
 
     for (auto it : _model->getNewMovableElements())
     {
-        GraphicElement * elm = new GraphicElement(_ball, it->getPositionX(), it->getPositionY(), 50, 50);
+        GraphicElement * elm = new GraphicElement(_obstacle, it->getPositionX(), it->getPositionY(), 50, 50);
         elm->resize(70, 70);
         _elementToGraphicElement[it] = elm;
+
+        if ((it->getPositionX() + _elementToGraphicElement.at(it)->getSizeWidth() < 0))
+        {
+            _elementToGraphicElement.erase(it);
+//            std::cout << "ERASED" << std::endl;
+//            std::cout << "TAILLE IS NOW : " << _elementToGraphicElement.size() << std::endl;
+        }
     }
 
 

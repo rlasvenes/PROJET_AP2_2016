@@ -17,7 +17,7 @@ MovableElement::MovableElement(int x, int y, int w, int h)
     , _y(y)
     , _width(w)
     , _height(h)
-    , _slidingSpeed(-5)
+    , _slidingSpeed(-1)
 {
     this->move();
 }
@@ -38,10 +38,13 @@ int MovableElement::getPositionY() const { return _y; }
 int MovableElement::getDeltaX() const { return _deltaX; }
 int MovableElement::getDeltaY() const { return _deltaY; }
 
+float MovableElement::getSizeWidth() const { return _width; }
+float MovableElement::getSizeHeight() const { return _height; }
+
 void MovableElement::move()
 {
     _x += _slidingSpeed;
-    std::cout << "[MovableElement]\tPosition.X =\t" << this->getPositionX() << std::endl;
+    //std::cout << "[MovableElement]\tPosition.X =\t" << this->getPositionX() << std::endl;
 }
 
 void MovableElement::setSlidingSpeed(unsigned int value)
