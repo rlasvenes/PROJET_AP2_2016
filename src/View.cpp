@@ -16,11 +16,12 @@ using namespace std;
 //=======================================
 // Constructeur
 //=======================================
-View::View(int w, int h)
+View::View(int w, int h, unsigned int mode)
     : _w(w)
     , _h(h)
     , _slidingSpeed(5)
     , _i(0) , _j(0) , _k(0)
+    , _mode(mode)
 {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
@@ -34,48 +35,48 @@ View::View(int w, int h)
     loadSprite(_foreground, _foregroundSprite, PATH_FOREGROUND_IMAGE);
     _slideForeground = new SlidingBackground(_foreground, _w, _h, _slidingSpeed*2);
 
-    loadSprite(_ball, _ballElm, PATH_BALL_IMAGE);
-    _ballElm = new GraphicElement(_ball, 100, 450, 70 ,70);
-    _ballElm->setOrigin(_ballElm->getTexture()->getSize().x/2, _ballElm->getTexture()->getSize().y/2);
-    _ballElm->resize(70, 70);
-
-    _shadow = new GraphicElement(_ball, 50, 525, 70, 70);
-    _shadow->setOrigin(_shadow->getTexture()->getSize().x/2, _shadow->getTexture()->getSize().y/2);
-    _shadow->resize(70, 45);
-    _shadow->setOpacity(50);
-    _shadow->setColor(sf::Color(128, 128, 128, _shadow->getOpacity()));
-
-    loadSprite(_obstacle, _obstacleSprite, PATH_OBSTACLE_IMAGE);
-
-    // ================================ DÉBUT TESTS ================================
-
-    if (!_font.loadFromFile(PATH_FONT))
-        std::cout << "ERREUR LORS DU CHARGEMENT DE " << PATH_FONT << std::endl;
-
-    _texte.setFont(_font);
-    _getTime.setFont(_font);
-
-    _getTime.setPosition(40, 25);
-
-    std::string m_IP = "IP = " + sf::IpAddress::getLocalAddress().toString();
-    std::string IP = sf::IpAddress::getPublicAddress().toString();
-
-    _texte.setString(m_IP);
-
-    _texte.setCharacterSize(26);
-    _getTime.setCharacterSize(22);
-
-    _texte.setColor(sf::Color::Black);
-    _getTime.setColor(sf::Color::White);
-
-    TcpClient clientTest;
-    std::string _it = std::to_string(clientTest.getPortNumber());
-    _texte.setString(_texte.getString() + " ; Port = " + _it);
-    _texte.setPosition((w/2) - ((_texte.getString().getSize())/2)*(_texte.getCharacterSize() + 9.5)/2, (h/2) + _texte.getCharacterSize() + 210);
-
-    // ================================= FIN TESTS ==================================
-
     _audio = new Audio(PATH_SOUND_TEST);
+    _audio->setLoop(true);
+    _audio->play();
+
+    switch (_mode)
+    {
+    case 1:
+    {
+
+    }
+        break;
+
+    case 2:
+
+        loadGame();
+        loadSprite(_menuTexture, _menuIntro, PATH_MENU_IMAGE);
+
+        _menuIntro = new GraphicElement(_menuTexture, 0, 0, 0, 0);
+        _menuIntro->setPosition((_w - _menuIntro->getTexture()->getSize().x) / 2,
+                                ((_h - _menuIntro->getTexture()->getSize().y) / 2) - 200);
+
+        // chargement des images des bouttons
+
+        loadSprite(_playButton, _playButtonElm, PATH_PLAY_BTN_IMAGE);
+        _playButtonElm = new GraphicElement(_playButton, 0, _h/3, 0, 0);
+        _playButtonElm->setTextureRect(sf::IntRect(196, 0, 202, 82));
+        _playButtonElm->setPosition(_w/2 - _playButtonElm->getTextureRect().width, _h/3);
+
+        loadSprite(_quitButton, _quitButtonElm, PATH_QUIT_BTN_IMAGE);
+        _quitButtonElm = new GraphicElement(_quitButton, _playButtonElm->getPosition().x + _playButtonElm->getTextureRect().width , _h/3, 0, 0);
+        _quitButtonElm->setTextureRect(sf::IntRect(196, 0, 202, 82));
+
+        loadSprite(_shopButton, _shopButtonElm, PATH_SHOP_BTN_IMAGE);
+        loadSprite(_scoreButton, _scoreButtonElm, PATH_SCORE_BTN_IMAGE);
+
+        break;
+
+    default :
+        break;
+    }
+
+
 
 }
 
@@ -128,25 +129,42 @@ void View::setModel(Model * model){
 //=======================================
 // Fonction de dessin
 //=======================================
-void View::draw(){
+void View::draw() {
 
     _window->clear(sf::Color(abs(255*sin(_i)), abs(255*sin(_j)), abs(255*sin(_k)), 0)); // affichage fond ecran dynamique
-
     _slideBackground->draw(_window);
     _slideForeground->draw(_window);
 
-    _shadow->draw(_window);
-    _ballElm->draw(_window);
+    switch (_mode) {
 
-    _window->draw(_texte);
-    _window->draw(_getTime);
-
-    for (auto it : _elementToGraphicElement)
+    case 1:
     {
-        _window->draw(*it.second);
-    }
+        _shadow->draw(_window);
+        _ballElm->draw(_window);
 
-    _model->drawGraphicPositionBall(350, 10, _font, _window);
+        _window->draw(_texte);
+        _window->draw(_getTime);
+
+        for (auto it : _elementToGraphicElement)
+        {
+            _window->draw(*it.second);
+        }
+
+        _model->drawGraphicPositionBall(350, 10, _font, _window);
+    }
+        break;
+
+    case 2:
+    {
+        _menuIntro->draw(_window);
+        _playButtonElm->draw(_window);
+        _quitButtonElm->draw(_window);
+    }
+        break;
+
+    default:
+        break;
+    }
 
     _window->display();
 }
@@ -159,18 +177,35 @@ bool View::treatEvents(){
     bool result = false;
     if(_window->isOpen()){
         {
-            _time = _clock.getElapsedTime();
-            _getTime.setString("[ TIME : " + std::to_string((int) _time.asSeconds()) + " ]");
-
             _i += (2 * PI) / 500 ;      _j += (2 * PI) / 660;    _k += (2 * PI) / 770;
 
-            _ballElm->rotate(3 * !(_model->getPauseState()) * _slidingSpeed);
+            switch (_mode) {
+            case 1:
+            {
+                _time = _clock.getElapsedTime();
+                _getTime.setString("[ TIME : " + std::to_string((int) _time.asSeconds()) + " ]");
 
-            if (!_model->getPauseState())
-                updateBallShadow(_shadow);
+                _ballElm->rotate(3 * !(_model->getPauseState()) * _slidingSpeed);
 
-            _slideBackground->setSpeed(2 * !(_model->getPauseState())); // si en pause, alors : x 0
-            _slideForeground->setSpeed(6 * !(_model->getPauseState()));
+                if (!_model->getPauseState())
+                    updateBallShadow(_shadow);
+
+                _slideBackground->setSpeed(2 * !(_model->getPauseState())); // si en pause, alors : x 0
+                _slideForeground->setSpeed(5 * !(_model->getPauseState()));
+
+                if (_slideForeground->getDistanceTraveled() % 5000 == 0)
+                    std::cout << "score : " << _slideForeground->getDistanceTraveled() / 2 << std::endl;
+            }
+                break;
+
+            case 2:
+
+                break;
+
+            default:
+                break;
+            }
+
 
             result = true;
         }
@@ -179,82 +214,125 @@ bool View::treatEvents(){
         while (_window->pollEvent(event)) {
 
             if ((event.type == sf::Event::Closed) ||
-               ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)))
+                    ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)))
             {
                 _window->close();
                 result = false;
             }
 
-            if (((event.type == sf::Event::KeyPressed) &&
-                (event.key.code == sf::Keyboard::Space || event.key.code == sf::Keyboard::Up) &&
-                _model->getBall()->getPositionY() == 500) && !_model->getPauseState()) // 500 == SOL
+            switch (_mode)
             {
-                _model->getBall()->setJump(true);
-                _model->getBall()->setDeltaY(_model->getBall()->maxJump());
-            }
-
-            if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::P))
+            case 1:
             {
-                _model->setPauseState(!_model->getPauseState());
-            }
+                if (((event.type == sf::Event::KeyPressed) &&
+                     (event.key.code == sf::Keyboard::Space || event.key.code == sf::Keyboard::Up) &&
+                     _model->getBall()->getPositionY() == 500) && !_model->getPauseState()) // 500 == SOL
+                {
+                    _model->getBall()->setJump(true);
+                    _model->getBall()->setDeltaY(_model->getBall()->maxJump());
+                }
 
-            if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Add))
+                if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::P))
+                {
+                    _model->setPauseState(!_model->getPauseState());
+                }
+
+                if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Add))
+                {
+                    _model->addElement();
+                }
+            }
+                break;
+
+            case 2:
             {
-                _model->addElement();
-                std::cout << "taille : " << _model->getSize() << std::endl; // getSize() = _element.size()
-                std::cout << "Nouvelle taille : " << _model->getNewMovableElements().size() << std::endl;
-            }
+                if ((event.type == sf::Event::MouseButtonPressed) && (event.mouseButton.button == sf::Mouse::Left) && (_playButtonElm->getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)))
+                {
+                    std::cout << "Clicked play button !" << std::endl;
+                    _mode = 1;
+                }
 
-        } // pollevent
-    } // isOpen
+                if (((event.type == sf::Event::MouseButtonPressed) && (event.mouseButton.button == sf::Mouse::Left) && (_quitButtonElm->getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))))
+                {
+                    std::cout << "quited game ! " << std::endl;
+                    _window->close();
+                }
+            }
+                break;
+
+            default :
+                break;
+            }
+        }
+    }
 
     return result;
 }
 
 void View::treatKeyState()
 {
-    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) && !_model->getPauseState())
+    switch (_mode) {
+
+    case 1:
     {
-        _model->moveBall(false);
-        _ballElm->rotate(1);
+        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) && !_model->getPauseState())
+        {
+            _model->moveBall(false);
+            _ballElm->rotate(1);
+        }
+
+        if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) && !_model->getPauseState())
+        {
+            _model->moveBall(true);
+            _ballElm->rotate(6);
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+            _audio->play();
+
+        _shadow->setPosition(_ballElm->getPosition().x, _shadow->getPosition().y);
     }
+        break;
 
-    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) && !_model->getPauseState())
-    {
-        _model->moveBall(true);
-        _ballElm->rotate(6);
+    case 2:
+        break;
+
+    default:
+        break;
     }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
-        _audio->play();
-
-    _shadow->setPosition(_ballElm->getPosition().x, _shadow->getPosition().y);
-
 }    
 
 void View::synchronize()
 {
-    int x, y;
+    switch (_mode) {
 
-    _model->getBallPosition(x, y);
-    _ballElm->setPosition(x, y);
-
-    for (auto it : _model->getNewMovableElements())
+    case 1:
     {
-        GraphicElement * elm = new GraphicElement(_obstacle, it->getPositionX(), it->getPositionY(), 50, 50);
-        elm->resize(70, 70);
-        _elementToGraphicElement[it] = elm;
+        int x, y;
+        _model->getBallPosition(x, y);
+        _ballElm->setPosition(x, y);
 
-        if ((it->getPositionX() + _elementToGraphicElement.at(it)->getSizeWidth() < 0))
+        for (auto it : _model->getNewMovableElements())
         {
-            _elementToGraphicElement.erase(it);
-//            std::cout << "ERASED" << std::endl;
-//            std::cout << "TAILLE IS NOW : " << _elementToGraphicElement.size() << std::endl;
+            GraphicElement * elm = new GraphicElement(_obstacle, it->getPositionX(), it->getPositionY(), 50, 50);
+            elm->resize(70, 70);
+            _elementToGraphicElement[it] = elm;
+
+            if ((it->getPositionX() + _elementToGraphicElement.at(it)->getSizeWidth() < 0))
+            {
+                _elementToGraphicElement.erase(it);
+            }
         }
     }
+        break;
 
+    case 2:
+        // do nothing
+        break;
 
-
+    default:
+        break;
+    }
 }
 
 void View::setPositionCenter() const
@@ -286,7 +364,55 @@ void View::updateBallShadow(GraphicElement * element)
     }
     else
     {
-       element->setOpacity(50);
-       element->resize(70, 45);
+        element->setOpacity(50);
+        element->resize(70, 45);
     }
+}
+
+unsigned int View::getStateMode() const { return _mode; }
+
+void View::loadGame()
+{
+    // ========================== JEU =============================
+
+    loadSprite(_ball, _ballElm, PATH_BALL_IMAGE);
+    _ballElm = new GraphicElement(_ball, 100, 450, 70 ,70);
+    _ballElm->setOrigin(_ballElm->getTexture()->getSize().x/2, _ballElm->getTexture()->getSize().y/2);
+    _ballElm->resize(70, 70);
+
+    _shadow = new GraphicElement(_ball, 50, 525, 70, 70);
+    _shadow->setOrigin(_shadow->getTexture()->getSize().x/2, _shadow->getTexture()->getSize().y/2);
+    _shadow->resize(70, 45);
+    _shadow->setOpacity(50);
+    _shadow->setColor(sf::Color(128, 128, 128, _shadow->getOpacity()));
+
+    loadSprite(_obstacle, _obstacleSprite, PATH_OBSTACLE_IMAGE);
+
+    // ================================ DÉBUT TESTS ================================
+
+    if (!_font.loadFromFile(PATH_FONT))
+        std::cout << "ERREUR LORS DU CHARGEMENT DE " << PATH_FONT << std::endl;
+
+    _texte.setFont(_font);
+    _getTime.setFont(_font);
+
+    _getTime.setPosition(40, 25);
+
+    std::string m_IP = "IP = " + sf::IpAddress::getLocalAddress().toString();
+    std::string IP = sf::IpAddress::getPublicAddress().toString();
+
+    _texte.setString(m_IP);
+
+    _texte.setCharacterSize(26);
+    _getTime.setCharacterSize(22);
+
+    _texte.setColor(sf::Color::Black);
+    _getTime.setColor(sf::Color::White);
+
+    TcpClient clientTest;
+    std::string _it = std::to_string(clientTest.getPortNumber());
+    _texte.setString(_texte.getString() + " ; Port = " + _it);
+    _texte.setPosition((_w/2) - ((_texte.getString().getSize())/2)*(_texte.getCharacterSize() + 9.5)/2, (_h/2) + _texte.getCharacterSize() + 210);
+
+    // ================================= FIN TESTS ==================================
 }

@@ -17,6 +17,8 @@ private:
 
     unsigned int _speed;
 
+    unsigned int _distanceTraveled;
+
 
 public:
 
@@ -25,6 +27,8 @@ public:
 
     void draw(sf::RenderWindow *window);
     void setSpeed(unsigned int value);
+
+    unsigned int getDistanceTraveled() const;
 };
 
 #endif // SLIDINGBACKGROUND_H

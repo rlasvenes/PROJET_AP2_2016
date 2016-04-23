@@ -46,8 +46,8 @@ void Model::nextStep()
             _new_elements.erase(_new_elements.begin());
         }
 
-        std::cout << "_element.size() = " << _element.size() << std::endl;
-        std::cout << "_new_elements.size() = " << _new_elements.size() << std::endl;
+        std::cout << "\t_element.size()\t = \t" << _element.size() << std::endl;
+        std::cout << "\t_new_elements.size() = \t" << _new_elements.size() << std::endl;
     }
 
 }

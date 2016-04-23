@@ -34,3 +34,13 @@ void Audio::stop()
 {
     _sound.stop();
 }
+
+void Audio::setLoop(bool value)
+{
+    _sound.setLoop(value);
+}
+
+void Audio::setPitch(float value)
+{
+    _sound.setPitch(value);
+}

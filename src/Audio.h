@@ -20,6 +20,9 @@ public:
     void play();
     void pause();
     void stop();
+
+    void setLoop(bool value);
+    void setPitch(float value);
 };
 
 #endif // AUDIO_H

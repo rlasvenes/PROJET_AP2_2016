@@ -12,21 +12,30 @@ int main() {
 
     Model model(SCREEN_WIDTH, SCREEN_HEIGHT);
 
+    View viewMenu(SCREEN_WIDTH, SCREEN_HEIGHT, 2);
 
+    viewMenu.setModel(&model);
+    viewMenu.setPositionCenter();
 
-    View view(SCREEN_WIDTH, SCREEN_HEIGHT);
+    while (viewMenu.treatEvents()) {
 
-    view.setModel(&model);
-    view.setPositionCenter();
+        viewMenu.synchronize();
+        viewMenu.treatKeyState();
 
-    while (view.treatEvents()) {
+        switch (viewMenu.getStateMode()) {
 
-        view.synchronize();
-        view.treatKeyState();
+        case 1:
+            model.nextStep();
+            break;
 
-        model.nextStep();
+        case 2:
+            break;
 
-        view.draw();
+        default:
+            break;
+        }
+
+        viewMenu.draw();
     }
 
     return EXIT_SUCCESS;
