@@ -148,6 +148,10 @@ void View::draw() {
         for (auto it : _elementToGraphicElement)
         {
             _window->draw(*it.second);
+            if (_model->getBall()->treatColision(it.first))
+            {
+                _elementToGraphicElement.erase(it.first);
+            }
         }
 
         _model->drawGraphicPositionBall(350, 10, _font, _window);
@@ -177,7 +181,7 @@ bool View::treatEvents(){
     bool result = false;
     if(_window->isOpen()){
         {
-            _i += (2 * PI) / 500 ;      _j += (2 * PI) / 660;    _k += (2 * PI) / 770;
+            _i += (2 * PI) / 555 ;      _j += (2 * PI) / 666;    _k += (2 * PI) / 777;
 
             switch (_mode) {
             case 1:
@@ -190,11 +194,11 @@ bool View::treatEvents(){
                 if (!_model->getPauseState())
                     updateBallShadow(_shadow);
 
-                _slideBackground->setSpeed(2 * !(_model->getPauseState())); // si en pause, alors : x 0
-                _slideForeground->setSpeed(5 * !(_model->getPauseState()));
+                _slideBackground->setSpeed(2 * !(_model->getPauseState()) * (int)_clock.getElapsedTime().asSeconds() / 15); // si en pause, alors : x 0
+                _slideForeground->setSpeed(5 * !(_model->getPauseState()) * (int)_clock.getElapsedTime().asSeconds() / 10);
 
-                if (_slideForeground->getDistanceTraveled() % 5000 == 0)
-                    std::cout << "score : " << _slideForeground->getDistanceTraveled() / 2 << std::endl;
+                //if (_slideForeground->getDistanceTraveled() % 5000 == 0)
+                    std::cout << "score : " << _slideForeground->getDistanceTraveled() * 2 << " " << __PRETTY_FUNCTION__ << std::endl;
             }
                 break;
 
@@ -205,7 +209,6 @@ bool View::treatEvents(){
             default:
                 break;
             }
-
 
             result = true;
         }
@@ -250,12 +253,33 @@ bool View::treatEvents(){
                 {
                     std::cout << "Clicked play button !" << std::endl;
                     _mode = 1;
+                    _slideForeground->setDistanceTraveled(0);
                 }
 
                 if (((event.type == sf::Event::MouseButtonPressed) && (event.mouseButton.button == sf::Mouse::Left) && (_quitButtonElm->getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))))
                 {
                     std::cout << "quited game ! " << std::endl;
                     _window->close();
+                }
+
+                if ((event.type == sf::Event::MouseMoved) && (_quitButtonElm->getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)))
+                {
+                    _quitButtonElm->setColor(sf::Color(128, 128, 128, 168));
+                }
+                else
+                {
+                    _quitButtonElm->setRotation(0);
+                    _quitButtonElm->setColor(sf::Color(255, 255, 255, 255));
+                }
+
+                if ((event.type == sf::Event::MouseMoved) && (_playButtonElm->getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)))
+                {
+                    _playButtonElm->setColor(sf::Color(128, 128, 128, 168));
+                }
+                else
+                {
+                    _playButtonElm->setRotation(0);
+                    _playButtonElm->setColor(sf::Color(255, 255, 255, 255));
                 }
             }
                 break;
@@ -278,13 +302,13 @@ void View::treatKeyState()
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) && !_model->getPauseState())
         {
             _model->moveBall(false);
-            _ballElm->rotate(1);
+            _ballElm->rotate(0.1);
         }
 
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) && !_model->getPauseState())
         {
             _model->moveBall(true);
-            _ballElm->rotate(6);
+            _ballElm->rotate(2);
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
@@ -315,8 +339,10 @@ void View::synchronize()
         for (auto it : _model->getNewMovableElements())
         {
             GraphicElement * elm = new GraphicElement(_obstacle, it->getPositionX(), it->getPositionY(), 50, 50);
-            elm->resize(70, 70);
+            elm->resize(50, 50);
             _elementToGraphicElement[it] = elm;
+
+            std::cout << "test position itérateur = " << it->getPositionX() << " + " << it->getPositionY() << std::endl;
 
             if ((it->getPositionX() + _elementToGraphicElement.at(it)->getSizeWidth() < 0))
             {

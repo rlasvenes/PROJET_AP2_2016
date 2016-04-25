@@ -32,6 +32,8 @@ public:
 
     GraphicElement * getShadow() const;
 
+    bool treatColision(const MovableElement * elm) const;
+
 private:
 
     int _x;

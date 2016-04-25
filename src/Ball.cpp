@@ -1,4 +1,5 @@
 #include "Ball.h"
+#include <iostream>
 #define SOL 500
 
 Ball::Ball()
@@ -15,7 +16,7 @@ Ball::Ball(int x, int y, int w, int h, int dx, int dy)
     , _width(w)
     , _deltaX(dx)
     , _deltaY(dy)
-    , _maxJump(30)
+    , _maxJump(25)
 {
 
 }
@@ -51,4 +52,14 @@ void Ball::setJump(bool value)
 int Ball::maxJump() const
 {
     return _maxJump;
+}
+
+bool Ball::treatColision(const MovableElement *elm) const
+{
+    if (this->getPositionX() + this->getSizeWidth() > elm->getPositionX()
+     || this->getPositionY() + this->getSizeWidth() > elm->getPositionY() + elm->getSizeHeight())
+    {
+        std::cout << "COLLISION" << std::endl;
+        return true;
+    }
 }

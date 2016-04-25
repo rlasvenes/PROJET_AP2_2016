@@ -25,10 +25,11 @@ public:
     SlidingBackground();
     SlidingBackground(sf::Texture & image, float w, float h, unsigned int speed);
 
-    void draw(sf::RenderWindow *window);
+    void draw(sf::RenderWindow * window);
     void setSpeed(unsigned int value);
 
     unsigned int getDistanceTraveled() const;
+    void setDistanceTraveled(unsigned int value);
 };
 
 #endif // SLIDINGBACKGROUND_H

@@ -46,10 +46,15 @@ void Model::nextStep()
             _new_elements.erase(_new_elements.begin());
         }
 
-        std::cout << "\t_element.size()\t = \t" << _element.size() << std::endl;
-        std::cout << "\t_new_elements.size() = \t" << _new_elements.size() << std::endl;
-    }
+        if (_ball->treatColision(it))
+        {
+            vector<MovableElement *>::iterator it2 = find( _element.begin(), _element.end(), it );
+            vector<const MovableElement *>::iterator it3 = find( _new_elements.begin(), _new_elements.end(), it );
+            _element.erase(it2);
+            _new_elements.erase(it3);
+        }
 
+    }
 }
 
 //=========================================
@@ -139,10 +144,10 @@ void Model::jumpBall()
 void Model::addElement()
 {
 
-    MovableElement * elm = new MovableElement(_w, _h/2, 100, 100);
+    MovableElement * elm = new MovableElement(_w, 485, 50, 50);
+    elm->setSlidingSpeed(elm->getSlidingSpeed() * (!this->getPauseState()));
     _element.push_back(elm);
     _new_elements.push_back(elm);
-
 }
 
 std::vector<const MovableElement *> Model::getNewMovableElements() const

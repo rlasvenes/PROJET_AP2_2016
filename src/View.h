@@ -30,7 +30,7 @@ const std::string PATH_QUIT_BTN_IMAGE = "../img/quit_button.png";
 const std::string PATH_SHOP_BTN_IMAGE = "../img/shop_button.png";
 const std::string PATH_SCORE_BTN_IMAGE = "../img/scores_button.png";
 
-const int FRAME_LIMIT = 60;
+const int FRAME_LIMIT = 600;
 
 class Model;
 class GraphicElement;
