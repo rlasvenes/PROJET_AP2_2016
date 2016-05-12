@@ -5,6 +5,7 @@
 
 class Ball;
 class MovableElement;
+class LogFile;
 
 class Model {
 
@@ -17,6 +18,7 @@ private:
     std::vector<const MovableElement *> _new_elements;
 
     bool _pause;
+
 
 public:
 
@@ -40,11 +42,18 @@ public:
     // obstacles
     std::vector<const MovableElement *> getNewMovableElements() const;
     void addElement(); // doit maj _element et _new_elements
-    int getSize() const;
+    int getElementSize() const;
 
     // pause
     bool getPauseState() const;
     void setPauseState(bool value);
+
+    // logfile
+    LogFile * console;
+
+    // SOL est un attribut publique; nécessaire pour rendre la position initiale de la balle générique
+    // car il n'y a pas d'autre moyen sinon étant donné que _h est un attribut privée et local à la classe.
+    int SOL = _h/1.35;
 
 };
 #endif

@@ -12,13 +12,31 @@ Model::Model(int w, int h)
     :  _w(w), _h(h)
     , _pause(false)
 {
-    _ball = new Ball(50, 500, 70, 70, 0, 0);
+    _ball = new Ball(50, _h/1.35, 70, 70, 0, 0);
+    console = new LogFile();
 }
 
 //=========================================
 // Destructeurs
 //=========================================
-Model::~Model(){}
+Model::~Model()
+{
+    delete _ball;
+
+    for (auto it : _element)
+    {
+        if (it != nullptr)
+            delete it;
+    }
+
+    for (auto it : _new_elements)
+    {
+        if (it != nullptr)
+            delete it;
+    }
+
+    delete console;
+}
 
 //=========================================
 // Calcul la prochaine étape
@@ -38,7 +56,15 @@ void Model::nextStep()
 
     for (auto it : _element)
     {
+
         it->move();
+
+        if (this->getPauseState())
+        {
+            it->setSlidingSpeed(it->getSlidingSpeed() * !this->getPauseState());
+        }
+        else
+            it->setSlidingSpeed(-8);
 
         if ((it->getPositionX() + it->getSizeWidth() < 0))
         {
@@ -46,12 +72,11 @@ void Model::nextStep()
             _new_elements.erase(_new_elements.begin());
         }
 
-        if (_ball->treatColision(it))
-        {
+        if (_ball->treatColision(it))        {
             vector<MovableElement *>::iterator it2 = find( _element.begin(), _element.end(), it );
             vector<const MovableElement *>::iterator it3 = find( _new_elements.begin(), _new_elements.end(), it );
-            _element.erase(it2);
-            _new_elements.erase(it3);
+            //_element.erase(it2);
+            //_new_elements.erase(it3);
         }
 
     }
@@ -69,7 +94,7 @@ void Model::getBallPosition(int &x, int &y)
 //=========================================
 // Affichage graphique coord. balle
 //=========================================
-void Model::drawGraphicPositionBall(int x, int y, sf::Font & font, sf::RenderWindow * window)
+void Model::drawGraphicPositionBall(int x, int y, sf::Font & font, sf::RenderWindow * window) // a optimiser avec un Menu::Menu()
 {
     int bx, by;
     this->getBallPosition(bx, by);
@@ -144,10 +169,14 @@ void Model::jumpBall()
 void Model::addElement()
 {
 
-    MovableElement * elm = new MovableElement(_w, 485, 50, 50);
-    elm->setSlidingSpeed(elm->getSlidingSpeed() * (!this->getPauseState()));
-    _element.push_back(elm);
-    _new_elements.push_back(elm);
+
+    MovableElement * elm = new MovableElement(_w, this->SOL - 15, 50, 50); // je ne sais pas pourquoi -15, mais y'a une diff entre sol et movable
+
+    if (!this->getPauseState())
+    {
+        _element.push_back(elm);
+        _new_elements.push_back(elm);
+    }
 }
 
 std::vector<const MovableElement *> Model::getNewMovableElements() const
@@ -157,7 +186,7 @@ std::vector<const MovableElement *> Model::getNewMovableElements() const
 //=========================================
 // Getter taille du conteneur des éléments
 //=========================================
-int Model::getSize() const
+int Model::getElementSize() const
 {
     return _element.size();
 }

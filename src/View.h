@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <map>
+#include <iomanip>
 
 #include "Ball.h"
 #include "Model.h"
@@ -15,6 +16,8 @@
 #include "TcpClient.h"
 #include "Menu.h"
 #include "Audio.h"
+#include "LogFile.h"
+#include "XOR_EncryptDecryption.h"
 
 const std::string PATH_BACKGROUND_IMAGE = "../img/city_3.png";
 const std::string PATH_FOREGROUND_IMAGE = "../img/city_1.png";
@@ -30,13 +33,16 @@ const std::string PATH_QUIT_BTN_IMAGE = "../img/quit_button.png";
 const std::string PATH_SHOP_BTN_IMAGE = "../img/shop_button.png";
 const std::string PATH_SCORE_BTN_IMAGE = "../img/scores_button.png";
 
-const int FRAME_LIMIT = 600;
+const std::string PATH_BACK_BTN_IMAGE = "../img/back_button.png";
+
+const int FRAME_LIMIT = 60;
 
 class Model;
 class GraphicElement;
 class SlidingBackground;
 class Menu;
 class Audio;
+class XOR_EncryptDecryption;
 
 class View {
 
@@ -91,8 +97,14 @@ private:
     sf::Texture _scoreButton;
     GraphicElement * _scoreButtonElm;
 
+    sf::Texture _backButton;
+    GraphicElement * _backButtonElm;
+
     sf::Texture _shopButton;
     GraphicElement * _shopButtonElm;
+
+    Menu * _pauseMenu;
+    Menu * _scoreMenu;
 
     // polices + texte + temps
     sf::Font _font;
@@ -102,10 +114,13 @@ private:
     // horloge temps (chronomètre)
     sf::Clock _clock;
     sf::Time _time;
+    int temps;
 
     // affichage + audio + couleur
     float _i, _j, _k;
-    Audio * _audio;
+
+    sf::Sound m;
+    sf::SoundBuffer sb;
 
 public:
 

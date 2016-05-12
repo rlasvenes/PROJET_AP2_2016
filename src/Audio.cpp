@@ -20,6 +20,12 @@ void Audio::loadSound(const std::string & name)
     }
 }
 
+Audio::~Audio()
+{
+    delete & _sound;
+    delete & _buffer;
+}
+
 void Audio::play()
 {
     _sound.play();
@@ -43,4 +49,9 @@ void Audio::setLoop(bool value)
 void Audio::setPitch(float value)
 {
     _sound.setPitch(value);
+}
+
+void Audio::resetBuffer()
+{
+    _sound.resetBuffer();
 }

@@ -4,10 +4,9 @@
 #include <iostream>
 
 MovableElement::MovableElement()
-    : _slidingSpeed(5)
-    , _x(0)
+    : _x(0)
     , _y(0)
-
+    , _slidingSpeed(5)
 {
 
 }
@@ -17,9 +16,14 @@ MovableElement::MovableElement(int x, int y, int w, int h)
     , _y(y)
     , _width(w)
     , _height(h)
-    , _slidingSpeed(-2)
+    , _slidingSpeed(-1)
 {
-    this->move();
+
+}
+
+MovableElement::~MovableElement()
+{
+    delete this;
 }
 
 void MovableElement::setDeltaX(int deltaX)

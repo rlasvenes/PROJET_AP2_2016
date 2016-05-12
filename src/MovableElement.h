@@ -22,6 +22,8 @@ public:
     MovableElement();
     MovableElement(int x, int y, int w, int h);
 
+    ~MovableElement();
+
     void setDeltaX(int deltaX);
     void setDeltaY(int deltaY);
 

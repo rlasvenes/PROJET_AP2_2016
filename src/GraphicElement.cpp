@@ -16,6 +16,11 @@ GraphicElement::GraphicElement(sf::Texture & image, int x, int y, int w, int h) 
     _h = h;
 }
 
+GraphicElement::~GraphicElement()
+{
+
+}
+
 void GraphicElement::draw(sf::RenderWindow * window)
 {
     window->draw(*this);

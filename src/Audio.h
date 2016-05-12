@@ -15,6 +15,7 @@ public:
 
     Audio();
     Audio(const std::string & name); // name = path en l'occurence
+    ~Audio();
 
     void loadSound(const std::string & name);
     void play();
@@ -23,6 +24,8 @@ public:
 
     void setLoop(bool value);
     void setPitch(float value);
+
+    void resetBuffer();
 };
 
 #endif // AUDIO_H

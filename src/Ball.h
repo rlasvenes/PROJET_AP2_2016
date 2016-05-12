@@ -14,6 +14,8 @@ public:
     Ball();
     Ball(int x, int y, int w, int h, int dx, int dy);
 
+    ~Ball();
+
     void move();
     void stop();
     void jump();
@@ -26,6 +28,12 @@ public:
     int getPositionX() const;
     int getPositionY() const;
 
+    void setPositionX(int value);
+    void setPositionY(int value);
+
+    float getSizeWidth() const;
+    float getSizeHeight() const;
+
     bool isJumping() const;
     void setJump(bool value);
     int maxJump() const;
@@ -33,6 +41,9 @@ public:
     GraphicElement * getShadow() const;
 
     bool treatColision(const MovableElement * elm) const;
+
+    void setTarget(bool value);
+    bool isTargetted() const;
 
 private:
 
@@ -50,6 +61,8 @@ private:
 
     sf::Clock m_clock;
     GraphicElement * _shadow;
+
+    bool _isTargetted;
 
 };
 

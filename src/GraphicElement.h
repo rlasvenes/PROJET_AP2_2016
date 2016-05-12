@@ -22,6 +22,8 @@ public:
     GraphicElement();
     GraphicElement(sf::Texture & image, int x, int y, int w, int h);
 
+    ~GraphicElement();
+
     void draw(sf::RenderWindow * window);
     void resize(int w, int h);
 
