@@ -3,7 +3,12 @@
 
 #include <iostream>
 
-const int SCREEN_WIDTH = 800;
+#define JEU 1
+#define MENU 2
+#define GAME_OVER 3
+#define SCORE 4
+
+const int SCREEN_WIDTH = 1200;
 const int SCREEN_HEIGHT = 600;
 
 int main() {
@@ -12,30 +17,30 @@ int main() {
 
     Model model(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    View viewMenu(SCREEN_WIDTH, SCREEN_HEIGHT, 2);
+    View view(SCREEN_WIDTH, SCREEN_HEIGHT, MENU);
 
-    viewMenu.setModel(&model);
-    viewMenu.setPositionCenter();
+    view.setModel(&model);
+    view.setPositionCenter();
 
-    while (viewMenu.treatEvents()) {
+    while (view.treatEvents()) {
 
-        viewMenu.synchronize();
-        viewMenu.treatKeyState();
+        view.synchronize();
+        view.treatKeyState();
 
-        switch (viewMenu.getStateMode()) {
+        switch (view.getStateMode()) {
 
-        case 1:
+        case JEU:
             model.nextStep();
             break;
 
-        case 2:
+        case MENU:
             break;
 
         default:
             break;
         }
 
-        viewMenu.draw();
+        view.draw();
     }
 
     return EXIT_SUCCESS;

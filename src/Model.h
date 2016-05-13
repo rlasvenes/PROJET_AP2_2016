@@ -5,6 +5,7 @@
 
 class Ball;
 class MovableElement;
+class LogFile;
 
 class Model {
 
@@ -17,6 +18,7 @@ private:
     std::vector<const MovableElement *> _new_elements;
 
     bool _pause;
+
 
 public:
 
@@ -45,6 +47,9 @@ public:
     // pause
     bool getPauseState() const;
     void setPauseState(bool value);
+
+    // logfile
+    LogFile * console;
 
 };
 #endif

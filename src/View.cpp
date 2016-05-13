@@ -9,9 +9,20 @@
 #include <sstream>
 #include <iostream>
 
-#define PI 3.14159265359
+#define PI 3.14159265359*1.f
+#define Console _model->console
+#define BLACK sf::Color(0, 0, 0)
+#define GRIS sf::Color(0, 0, 0, 168)
 
 using namespace std;
+
+template <typename T>
+float arrondi(float value)
+{
+    std::ostringstream o;
+    o << std::setprecision(2) << value;
+    return o.str();
+}
 
 //=======================================
 // Constructeur
@@ -19,25 +30,22 @@ using namespace std;
 View::View(int w, int h, unsigned int mode)
     : _w(w)
     , _h(h)
-    , _slidingSpeed(5)
-    , _i(0) , _j(0) , _k(0)
     , _mode(mode)
-{
-    sf::ContextSettings settings;
-    settings.antialiasingLevel = 8;
+    , _slidingSpeed(5)
+    , temps(0)
+    , _i(0) , _j(0) , _k(0)
 
-    _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner - Projet POO 2015/2016", sf::Style::Close, settings);
+{
+    _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner - Projet POO 2015/2016", sf::Style::Close);
     _window->setFramerateLimit(FRAME_LIMIT);
 
     loadSprite(_background, _backgroundSprite, PATH_BACKGROUND_IMAGE);
-    _slideBackground = new SlidingBackground(_background, _w, _h, _slidingSpeed/2);
+    _slideBackground = new SlidingBackground(_background, _w, _h, _slidingSpeed/4);
 
     loadSprite(_foreground, _foregroundSprite, PATH_FOREGROUND_IMAGE);
-    _slideForeground = new SlidingBackground(_foreground, _w, _h, _slidingSpeed*2);
+    _slideForeground = new SlidingBackground(_foreground, _w, _h, _slidingSpeed/2);
 
-    _audio = new Audio(PATH_SOUND_TEST);
-    _audio->setLoop(true);
-    _audio->play();
+    _pauseMenu = nullptr;
 
     switch (_mode)
     {
@@ -48,6 +56,7 @@ View::View(int w, int h, unsigned int mode)
         break;
 
     case 2:
+    {
 
         loadGame();
         loadSprite(_menuTexture, _menuIntro, PATH_MENU_IMAGE);
@@ -55,6 +64,10 @@ View::View(int w, int h, unsigned int mode)
         _menuIntro = new GraphicElement(_menuTexture, 0, 0, 0, 0);
         _menuIntro->setPosition((_w - _menuIntro->getTexture()->getSize().x) / 2,
                                 ((_h - _menuIntro->getTexture()->getSize().y) / 2) - 200);
+
+        XOR_EncryptDecryption Encrypt; // see https://www.stringencrypt.com/
+        std::string res = Encrypt.encrypt("password");
+        Console->log(" \"Remi\" become : " + res);
 
         // chargement des images des bouttons
 
@@ -68,15 +81,17 @@ View::View(int w, int h, unsigned int mode)
         _quitButtonElm->setTextureRect(sf::IntRect(196, 0, 202, 82));
 
         loadSprite(_shopButton, _shopButtonElm, PATH_SHOP_BTN_IMAGE);
-        loadSprite(_scoreButton, _scoreButtonElm, PATH_SCORE_BTN_IMAGE);
 
+        loadSprite(_scoreButton, _scoreButtonElm, PATH_SCORE_BTN_IMAGE);
+        _scoreButtonElm = new GraphicElement(_scoreButton, 200, _h/3 + _playButtonElm->getTexture()->getSize().y + 10, 0, 0);
+        _scoreButtonElm->setTextureRect(sf::IntRect(390, 0, 400, 92));
+        _scoreButtonElm->setPosition((_w - _scoreButtonElm->getTexture()->getSize().x/2)/2, _scoreButtonElm->getPosition().y);
+    }
         break;
 
     default :
         break;
     }
-
-
 
 }
 
@@ -124,6 +139,8 @@ View::~View(){
 //=======================================
 void View::setModel(Model * model){
     _model = model;
+
+    Console->log("Initialisation modèle/vue");
 }
 
 //=======================================
@@ -148,11 +165,16 @@ void View::draw() {
         for (auto it : _elementToGraphicElement)
         {
             _window->draw(*it.second);
-            if (_model->getBall()->treatColision(it.first))
+            if (_model->getBall()->treatColision(it.first)) // faire un find et si il trouve pas faire un _elementToGrtaphicElement.erase(it.first)
             {
+                Console->log("collision");
                 _elementToGraphicElement.erase(it.first);
             }
         }
+
+        if (_pauseMenu != nullptr)
+            _pauseMenu->draw(_window);
+
 
         _model->drawGraphicPositionBall(350, 10, _font, _window);
     }
@@ -163,7 +185,13 @@ void View::draw() {
         _menuIntro->draw(_window);
         _playButtonElm->draw(_window);
         _quitButtonElm->draw(_window);
+        _scoreButtonElm->draw(_window);
     }
+        break;
+
+    case 3:
+        _backButtonElm->draw(_window);
+        _scoreMenu->draw(_window);
         break;
 
     default:
@@ -186,24 +214,38 @@ bool View::treatEvents(){
             switch (_mode) {
             case 1:
             {
-                _time = _clock.getElapsedTime();
-                _getTime.setString("[ TIME : " + std::to_string((int) _time.asSeconds()) + " ]");
+                int p = _clock.getElapsedTime().asSeconds();
+                _getTime.setString("[ TIME : " + std::to_string( p ) + " ]");
 
-                _ballElm->rotate(3 * !(_model->getPauseState()) * _slidingSpeed);
+                _ballElm->rotate(3 * !(_model->getPauseState()));
+
+                if (p !=  temps)
+                {
+                    if (temps % (rand()%4+1) == 0)
+                    {
+                        _model->addElement();
+                        Console->log("adding an element");
+                    }
+
+                    temps++;
+                }
+
+                //_slideBackground->setSpeed(_model);
 
                 if (!_model->getPauseState())
                     updateBallShadow(_shadow);
 
-                _slideBackground->setSpeed(2 * !(_model->getPauseState()) * (int)_clock.getElapsedTime().asSeconds() / 15); // si en pause, alors : x 0
-                _slideForeground->setSpeed(5 * !(_model->getPauseState()) * (int)_clock.getElapsedTime().asSeconds() / 10);
-
-                //if (_slideForeground->getDistanceTraveled() % 5000 == 0)
+                if (_slideForeground->getDistanceTraveled() % 5000 == 0)
                     std::cout << "score : " << _slideForeground->getDistanceTraveled() * 2 << " " << __PRETTY_FUNCTION__ << std::endl;
             }
                 break;
 
             case 2:
+                // do nothing
+                break;
 
+            case 3:
+                // do nothing
                 break;
 
             default:
@@ -217,7 +259,7 @@ bool View::treatEvents(){
         while (_window->pollEvent(event)) {
 
             if ((event.type == sf::Event::Closed) ||
-                    ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)))
+                    ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)) && (_mode == 2 || _mode == 1))
             {
                 _window->close();
                 result = false;
@@ -225,7 +267,7 @@ bool View::treatEvents(){
 
             switch (_mode)
             {
-            case 1:
+            case 1: // vue du jeu
             {
                 if (((event.type == sf::Event::KeyPressed) &&
                      (event.key.code == sf::Keyboard::Space || event.key.code == sf::Keyboard::Up) &&
@@ -238,28 +280,42 @@ bool View::treatEvents(){
                 if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::P))
                 {
                     _model->setPauseState(!_model->getPauseState());
+
+                    if (_model->getPauseState())
+                        _pauseMenu = new Menu(_w/2, _h/2, _w/2, _h/2, GRIS);
+                    else
+                        _pauseMenu = nullptr;
+
                 }
 
                 if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Add))
                 {
                     _model->addElement();
                 }
+
             }
                 break;
-
-            case 2:
+            case 2: // vue du menu
             {
                 if ((event.type == sf::Event::MouseButtonPressed) && (event.mouseButton.button == sf::Mouse::Left) && (_playButtonElm->getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)))
                 {
-                    std::cout << "Clicked play button !" << std::endl;
+                    Console->log("Click \"play\" button ");
+                    _clock.restart();
                     _mode = 1;
                     _slideForeground->setDistanceTraveled(0);
                 }
 
                 if (((event.type == sf::Event::MouseButtonPressed) && (event.mouseButton.button == sf::Mouse::Left) && (_quitButtonElm->getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))))
                 {
-                    std::cout << "quited game ! " << std::endl;
+                    Console->log("Click \"quit\" button");
+                    Console->log("spent " + std::to_string(_clock.getElapsedTime().asSeconds()) + " seconds at menu");
                     _window->close();
+                }
+
+                if (((event.type == sf::Event::MouseButtonPressed) && (event.mouseButton.button == sf::Mouse::Left) && (_scoreButtonElm->getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))))
+                {
+                    Console->log("Click \"best scores\" button");
+                    _mode = 3;
                 }
 
                 if ((event.type == sf::Event::MouseMoved) && (_quitButtonElm->getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)))
@@ -268,7 +324,6 @@ bool View::treatEvents(){
                 }
                 else
                 {
-                    _quitButtonElm->setRotation(0);
                     _quitButtonElm->setColor(sf::Color(255, 255, 255, 255));
                 }
 
@@ -278,8 +333,40 @@ bool View::treatEvents(){
                 }
                 else
                 {
-                    _playButtonElm->setRotation(0);
                     _playButtonElm->setColor(sf::Color(255, 255, 255, 255));
+                }
+
+                if ((event.type == sf::Event::MouseMoved) && (_scoreButtonElm->getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)))
+                {
+                    _scoreButtonElm->setColor(sf::Color(128, 128, 128, 168));
+                }
+                else
+                {
+                    _scoreButtonElm->setColor(sf::Color(255, 255, 255, 255));
+                }
+            }
+                break;
+
+            case 3: // Vue des meilleurs scores
+            {
+                if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
+                {
+                    _mode = 2;
+                }
+
+                if (((event.type == sf::Event::MouseButtonPressed) && (event.mouseButton.button == sf::Mouse::Left) && (_backButtonElm->getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))))
+                {
+                    Console->log("Click \"best scores\" button");
+                    _mode = 2;
+                }
+
+                if ((event.type == sf::Event::MouseMoved) && (_backButtonElm->getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)))
+                {
+                    _backButtonElm->setColor(sf::Color(128, 128, 128, 168));
+                }
+                else
+                {
+                    _backButtonElm->setColor(sf::Color(255, 255, 255, 255));
                 }
             }
                 break;
@@ -311,14 +398,14 @@ void View::treatKeyState()
             _ballElm->rotate(2);
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
-            _audio->play();
-
         _shadow->setPosition(_ballElm->getPosition().x, _shadow->getPosition().y);
     }
         break;
 
     case 2:
+        break;
+
+    case 3:
         break;
 
     default:
@@ -342,8 +429,6 @@ void View::synchronize()
             elm->resize(50, 50);
             _elementToGraphicElement[it] = elm;
 
-            std::cout << "test position itérateur = " << it->getPositionX() << " + " << it->getPositionY() << std::endl;
-
             if ((it->getPositionX() + _elementToGraphicElement.at(it)->getSizeWidth() < 0))
             {
                 _elementToGraphicElement.erase(it);
@@ -354,6 +439,9 @@ void View::synchronize()
 
     case 2:
         // do nothing
+        break;
+
+    case 3:
         break;
 
     default:
@@ -401,6 +489,11 @@ void View::loadGame()
 {
     // ========================== JEU =============================
 
+    loadSprite(_backButton, _backButtonElm, PATH_BACK_BTN_IMAGE);
+    _backButtonElm = new GraphicElement(_backButton, 50, 50, 0, 0);
+
+    _scoreMenu = new Menu(_w - 100, _h - 100 - 180, _w/2, _h/2, sf::Color(0, 0, 0, 128)); // 100 <=> margin
+
     loadSprite(_ball, _ballElm, PATH_BALL_IMAGE);
     _ballElm = new GraphicElement(_ball, 100, 450, 70 ,70);
     _ballElm->setOrigin(_ballElm->getTexture()->getSize().x/2, _ballElm->getTexture()->getSize().y/2);
@@ -419,26 +512,11 @@ void View::loadGame()
     if (!_font.loadFromFile(PATH_FONT))
         std::cout << "ERREUR LORS DU CHARGEMENT DE " << PATH_FONT << std::endl;
 
-    _texte.setFont(_font);
     _getTime.setFont(_font);
-
     _getTime.setPosition(40, 25);
-
-    std::string m_IP = "IP = " + sf::IpAddress::getLocalAddress().toString();
-    std::string IP = sf::IpAddress::getPublicAddress().toString();
-
-    _texte.setString(m_IP);
-
-    _texte.setCharacterSize(26);
-    _getTime.setCharacterSize(22);
-
-    _texte.setColor(sf::Color::Black);
     _getTime.setColor(sf::Color::White);
 
-    TcpClient clientTest;
-    std::string _it = std::to_string(clientTest.getPortNumber());
-    _texte.setString(_texte.getString() + " ; Port = " + _it);
-    _texte.setPosition((_w/2) - ((_texte.getString().getSize())/2)*(_texte.getCharacterSize() + 9.5)/2, (_h/2) + _texte.getCharacterSize() + 210);
-
     // ================================= FIN TESTS ==================================
+
+    // faire un sf::Text, et faire diminuer l'opacity jusqu'à 0
 }

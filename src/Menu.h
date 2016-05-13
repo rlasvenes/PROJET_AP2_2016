@@ -15,10 +15,15 @@ private:
     float _width;
     float _height;
 
+    sf::Color _couleur;
+    sf::Text _textHeader;
+
 public:
 
     Menu();
     Menu(float width, float height, float x, float y);
+    Menu(float width, float height, float x, float y, sf::Color couleur);
+    Menu(float width, float height, float x, float y, sf::Color couleur, sf::Text textHeader);
 
     ~Menu();
 

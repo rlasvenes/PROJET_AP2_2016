@@ -17,6 +17,7 @@ private:
 public:
 
     TcpClient();
+    //~TcpClient();
 
     // GETTERS
     unsigned int getPortNumber() const;
@@ -25,7 +26,7 @@ public:
     void setConnectionToSocket(sf::IpAddress IP, unsigned int port_value);
 
     void setPortToListen(unsigned int value);
-    void setAcceptationListener(sf::Socket socket_value);
+    void setAcceptationListener();
 
     void sendData(const void * data, std::size_t size); // send data to the targetted IP
     std::string receivedData(void *data, std::size_t size, std::size_t &received);

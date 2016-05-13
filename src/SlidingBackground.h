@@ -25,6 +25,8 @@ public:
     SlidingBackground();
     SlidingBackground(sf::Texture & image, float w, float h, unsigned int speed);
 
+    ~SlidingBackground();
+
     void draw(sf::RenderWindow * window);
     void setSpeed(unsigned int value);
 

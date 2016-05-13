@@ -14,6 +14,8 @@ public:
     Ball();
     Ball(int x, int y, int w, int h, int dx, int dy);
 
+    ~Ball();
+
     void move();
     void stop();
     void jump();
@@ -25,6 +27,9 @@ public:
 
     int getPositionX() const;
     int getPositionY() const;
+
+    float getSizeWidth() const;
+    float getSizeHeight() const;
 
     bool isJumping() const;
     void setJump(bool value);

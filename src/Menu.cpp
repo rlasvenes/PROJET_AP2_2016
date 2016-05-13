@@ -22,6 +22,36 @@ Menu::Menu(float width, float height, float x, float y)
     _rect.setSize(sf::Vector2f(width, height));
 }
 
+Menu::Menu(float width, float height, float x, float y, sf::Color couleur)
+    : _posX(x)
+    , _posY(y)
+    , _width(width)
+    , _height(height)
+    , _couleur(couleur)
+
+{
+    _rect.setOrigin(width/2, height/2);
+    _rect.setPosition(x, y);
+    _rect.setSize(sf::Vector2f(width, height));
+
+    _rect.setFillColor(couleur);
+}
+
+Menu::Menu(float width, float height, float x, float y, sf::Color couleur, sf::Text textHeader)
+    : _posX(x)
+    , _posY(y)
+    , _width(width)
+    , _height(height)
+    , _couleur(couleur)
+    , _textHeader(textHeader)
+{
+    _rect.setOrigin(width/2, height/2);
+    _rect.setPosition(x, y);
+    _rect.setSize(sf::Vector2f(width, height));
+
+    _rect.setFillColor(couleur);
+}
+
 void Menu::setPositionX(float value) { _posX = value; }
 void Menu::setPositionY(float value) { _posY = value; }
 

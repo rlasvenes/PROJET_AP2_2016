@@ -13,12 +13,17 @@ Model::Model(int w, int h)
     , _pause(false)
 {
     _ball = new Ball(50, 500, 70, 70, 0, 0);
+    console = new LogFile();
 }
 
 //=========================================
 // Destructeurs
 //=========================================
-Model::~Model(){}
+Model::~Model()
+{
+    for (auto it : _element)
+        delete it;
+}
 
 //=========================================
 // Calcul la prochaine étape
@@ -38,6 +43,7 @@ void Model::nextStep()
 
     for (auto it : _element)
     {
+
         it->move();
 
         if ((it->getPositionX() + it->getSizeWidth() < 0))
@@ -46,8 +52,7 @@ void Model::nextStep()
             _new_elements.erase(_new_elements.begin());
         }
 
-        if (_ball->treatColision(it))
-        {
+        if (_ball->treatColision(it))        {
             vector<MovableElement *>::iterator it2 = find( _element.begin(), _element.end(), it );
             vector<const MovableElement *>::iterator it3 = find( _new_elements.begin(), _new_elements.end(), it );
             _element.erase(it2);
