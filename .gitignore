@@ -1,0 +1,8 @@
+# les commentaires qui commençent par un # sont des commentaires
+
+*.[ao]
+
+build*
+
+*.pro*
+
