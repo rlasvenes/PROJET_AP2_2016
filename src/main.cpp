@@ -8,6 +8,12 @@
 #define GAME_OVER 3
 #define SCORE 4
 
+/*
+
+  Notes à moi-même: se renseigner sur FMOD pour faire une analyse spectrale du son pour faire un changement de couleur en fonction des "pics"
+
+ */
+
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 
@@ -27,18 +33,7 @@ int main() {
         view.synchronize();
         view.treatKeyState();
 
-        switch (view.getStateMode()) {
-
-        case JEU:
-            model.nextStep();
-            break;
-
-        case MENU:
-            break;
-
-        default:
-            break;
-        }
+        model.nextStep();
 
         view.draw();
     }

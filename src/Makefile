@@ -56,7 +56,8 @@ SOURCES       = main.cpp \
 		SlidingBackground.cpp \
 		Color.cpp \
 		LogFile.cpp \
-		XOR_EncryptDecryption.cpp 
+		XOR_EncryptDecryption.cpp \
+		SplashText.cpp 
 OBJECTS       = main.o \
 		View.o \
 		Model.o \
@@ -68,7 +69,8 @@ OBJECTS       = main.o \
 		SlidingBackground.o \
 		Color.o \
 		LogFile.o \
-		XOR_EncryptDecryption.o
+		XOR_EncryptDecryption.o \
+		SplashText.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -316,7 +318,8 @@ main.o: main.cpp View.h \
 		Menu.h \
 		Audio.h \
 		LogFile.h \
-		XOR_EncryptDecryption.h
+		XOR_EncryptDecryption.h \
+		SplashText.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 View.o: View.cpp View.h \
@@ -329,7 +332,8 @@ View.o: View.cpp View.h \
 		Menu.h \
 		Audio.h \
 		LogFile.h \
-		XOR_EncryptDecryption.h
+		XOR_EncryptDecryption.h \
+		SplashText.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o View.o View.cpp
 
 Model.o: Model.cpp Model.h \
@@ -342,7 +346,8 @@ Model.o: Model.cpp Model.h \
 		Menu.h \
 		Audio.h \
 		LogFile.h \
-		XOR_EncryptDecryption.h
+		XOR_EncryptDecryption.h \
+		SplashText.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Model.o Model.cpp
 
 Ball.o: Ball.cpp Ball.h \
@@ -355,6 +360,7 @@ Ball.o: Ball.cpp Ball.h \
 		Audio.h \
 		LogFile.h \
 		XOR_EncryptDecryption.h \
+		SplashText.h \
 		MovableElement.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Ball.o Ball.cpp
 
@@ -368,7 +374,8 @@ GraphicElement.o: GraphicElement.cpp GraphicElement.h \
 		Menu.h \
 		Audio.h \
 		LogFile.h \
-		XOR_EncryptDecryption.h
+		XOR_EncryptDecryption.h \
+		SplashText.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o GraphicElement.o GraphicElement.cpp
 
 TcpClient.o: TcpClient.cpp TcpClient.h \
@@ -381,7 +388,8 @@ TcpClient.o: TcpClient.cpp TcpClient.h \
 		Menu.h \
 		Audio.h \
 		LogFile.h \
-		XOR_EncryptDecryption.h
+		XOR_EncryptDecryption.h \
+		SplashText.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o TcpClient.o TcpClient.cpp
 
 MovableElement.o: MovableElement.cpp MovableElement.h \
@@ -394,7 +402,8 @@ MovableElement.o: MovableElement.cpp MovableElement.h \
 		Menu.h \
 		Audio.h \
 		LogFile.h \
-		XOR_EncryptDecryption.h
+		XOR_EncryptDecryption.h \
+		SplashText.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MovableElement.o MovableElement.cpp
 
 Menu.o: Menu.cpp Menu.h \
@@ -407,7 +416,8 @@ Menu.o: Menu.cpp Menu.h \
 		TcpClient.h \
 		Audio.h \
 		LogFile.h \
-		XOR_EncryptDecryption.h
+		XOR_EncryptDecryption.h \
+		SplashText.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Menu.o Menu.cpp
 
 SlidingBackground.o: SlidingBackground.cpp SlidingBackground.h \
@@ -420,7 +430,8 @@ SlidingBackground.o: SlidingBackground.cpp SlidingBackground.h \
 		Menu.h \
 		Audio.h \
 		LogFile.h \
-		XOR_EncryptDecryption.h
+		XOR_EncryptDecryption.h \
+		SplashText.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SlidingBackground.o SlidingBackground.cpp
 
 Color.o: Color.cpp Color.h \
@@ -434,7 +445,8 @@ Color.o: Color.cpp Color.h \
 		Menu.h \
 		Audio.h \
 		LogFile.h \
-		XOR_EncryptDecryption.h
+		XOR_EncryptDecryption.h \
+		SplashText.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Color.o Color.cpp
 
 LogFile.o: LogFile.cpp LogFile.h \
@@ -447,7 +459,8 @@ LogFile.o: LogFile.cpp LogFile.h \
 		TcpClient.h \
 		Menu.h \
 		Audio.h \
-		XOR_EncryptDecryption.h
+		XOR_EncryptDecryption.h \
+		SplashText.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o LogFile.o LogFile.cpp
 
 XOR_EncryptDecryption.o: XOR_EncryptDecryption.cpp XOR_EncryptDecryption.h \
@@ -460,8 +473,23 @@ XOR_EncryptDecryption.o: XOR_EncryptDecryption.cpp XOR_EncryptDecryption.h \
 		TcpClient.h \
 		Menu.h \
 		Audio.h \
-		LogFile.h
+		LogFile.h \
+		SplashText.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o XOR_EncryptDecryption.o XOR_EncryptDecryption.cpp
+
+SplashText.o: SplashText.cpp SplashText.h \
+		View.h \
+		Ball.h \
+		MovableElement.h \
+		Model.h \
+		GraphicElement.h \
+		SlidingBackground.h \
+		TcpClient.h \
+		Menu.h \
+		Audio.h \
+		LogFile.h \
+		XOR_EncryptDecryption.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SplashText.o SplashText.cpp
 
 ####### Install
 

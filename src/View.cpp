@@ -25,13 +25,32 @@ View::View(int w, int h, unsigned int mode)
     , _mode(mode)
     , _slidingSpeed(5)
     , temps(0)
-    , _i(0) , _j(0) , _k(0)
+    , _i(1) , _j(0) , _k(0)
 
 {
+
+    //////////////////////////////////////////
+    // FMOD SYNTAX TESTS
+    //////////////////////////////////////////
+
+
+
+
     _window = new sf::RenderWindow(sf::VideoMode(w, h, 32), "Runner - Projet POO 2015/2016", sf::Style::Close);
     _window->setFramerateLimit(FRAME_LIMIT);
 
-    _model->SOL = _h/1.35; // ré-affectation de la valeur (précaution)
+    try
+    {
+     splash = new SplashText("Projet Runner - M2103", PATH_FONT, _w/2, _h/1.3);
+     splash->setPosition(_w/2, _h/2);
+    }
+    catch (const char * m)
+    {
+        cout << "ERROR : Execption raised => " << m << endl;
+    }
+
+
+    _model->SOL = _h/1.35; // ré-affectation de la valeur (précaution) // faire un fichier constantes.h
 
     loadSprite(_background, _backgroundSprite, PATH_BACKGROUND_IMAGE);
     _slideBackground = new SlidingBackground(_background, _w, _h, _slidingSpeed/4);
@@ -73,6 +92,12 @@ View::View(int w, int h, unsigned int mode)
         XOR_EncryptDecryption Encrypt; // see https://www.stringencrypt.com/
         std::string res = Encrypt.encrypt("password");
         Console->log(" \"password\" become : " + res);
+
+        ////////////////////////
+        // splash text test
+        ////////////////////////
+
+
 
         // chargement des images des bouttons
 
@@ -190,7 +215,7 @@ View::~View(){
 
     // horloge temps (chronomètre)
     delete &_clock;
-    delete &_time;
+
 }
 
 //=======================================
@@ -227,7 +252,7 @@ void View::draw() {
             if (_model->getBall()->treatColision(it.first)) // faire un find et si il trouve pas faire un _elementToGrtaphicElement.erase(it.first)
             {
                 Console->log("collision");
-                //_elementToGraphicElement.erase(it.first);
+                _elementToGraphicElement.erase(it.first);
             }
         }
 
@@ -245,6 +270,7 @@ void View::draw() {
         _playButtonElm->draw(_window);
         _quitButtonElm->draw(_window);
         _scoreButtonElm->draw(_window);
+        splash->draw(_window);
     }
         break;
 
@@ -282,7 +308,7 @@ bool View::treatEvents(){
 
                 if (p !=  temps)
                 {
-                    if (temps % (rand()%3+1) == 0)
+                    if (temps % (rand()%4+2) == 0)
                     {
                         _model->addElement();
                         Console->log("adding an element");
@@ -297,14 +323,16 @@ bool View::treatEvents(){
                     updateBallShadow(_shadow);
 
                 //if (_slideForeground->getDistanceTraveled() % 5000 == 0)
-                    Console->log("score : " + std::to_string(_slideForeground->getDistanceTraveled()));
+                    //Console->log("score : " + std::to_string(_slideForeground->getDistanceTraveled()));
 
 
             }
                 break;
 
             case 2:
+            {
                 // do nothing
+            }
                 break;
 
             case 3:
@@ -376,7 +404,7 @@ bool View::treatEvents(){
                 if (((event.type == sf::Event::MouseButtonPressed) && (event.mouseButton.button == sf::Mouse::Left) && (_quitButtonElm->getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))))
                 {
                     Console->log("Click \"quit\" button");
-                    Console->log("spent " + std::to_string(_clock.getElapsedTime().asSeconds()) + " seconds at menu");
+                    Console->log("spent " + std::to_string(_clock.getElapsedTime().asSeconds()) + "seconds at menu");
                     _window->close();
                 }
 
@@ -500,7 +528,7 @@ void View::synchronize()
 
             if ((it->getPositionX() + _elementToGraphicElement.at(it)->getSizeWidth() < 0))
             {
-                //_elementToGraphicElement.erase(it);
+                _elementToGraphicElement.erase(it);
             }
         }
     }

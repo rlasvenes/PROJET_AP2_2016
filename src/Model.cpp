@@ -61,7 +61,7 @@ void Model::nextStep()
 
         if (this->getPauseState())
         {
-            it->setSlidingSpeed(it->getSlidingSpeed() * !this->getPauseState());
+            it->setSlidingSpeed(it->getSlidingSpeed()/5 * !this->getPauseState());
         }
         else
             it->setSlidingSpeed(-8);
@@ -75,8 +75,8 @@ void Model::nextStep()
         if (_ball->treatColision(it))        {
             vector<MovableElement *>::iterator it2 = find( _element.begin(), _element.end(), it );
             vector<const MovableElement *>::iterator it3 = find( _new_elements.begin(), _new_elements.end(), it );
-            //_element.erase(it2);
-            //_new_elements.erase(it3);
+            _element.erase(it2);
+            _new_elements.erase(it3);
         }
 
     }
@@ -168,7 +168,6 @@ void Model::jumpBall()
 //=========================================
 void Model::addElement()
 {
-
 
     MovableElement * elm = new MovableElement(_w, this->SOL - 15, 50, 50); // je ne sais pas pourquoi -15, mais y'a une diff entre sol et movable
 

@@ -9,6 +9,8 @@
 #include <map>
 #include <iomanip>
 
+
+
 #include "Ball.h"
 #include "Model.h"
 #include "GraphicElement.h"
@@ -18,6 +20,7 @@
 #include "Audio.h"
 #include "LogFile.h"
 #include "XOR_EncryptDecryption.h"
+#include "SplashText.h"
 
 const std::string PATH_BACKGROUND_IMAGE = "../img/city_3.png";
 const std::string PATH_FOREGROUND_IMAGE = "../img/city_1.png";
@@ -25,7 +28,7 @@ const std::string PATH_BALL_IMAGE = "../img/ball3.png";
 const std::string PATH_OBSTACLE_IMAGE = "../img/obstacle.png";
 
 const std::string PATH_SOUND_TEST = "../sounds/runner_theme.wav";
-const std::string PATH_FONT = "../fonts/8_bit_font2.ttf";
+const std::string PATH_FONT = "../fonts/Dimis.ttf";
 
 const std::string PATH_MENU_IMAGE = "../img/Runner3.png";
 const std::string PATH_PLAY_BTN_IMAGE = "../img/play_button.png";
@@ -43,6 +46,7 @@ class SlidingBackground;
 class Menu;
 class Audio;
 class XOR_EncryptDecryption;
+class SplashText;
 
 class View {
 
@@ -121,6 +125,8 @@ private:
 
     sf::Sound m;
     sf::SoundBuffer sb;
+
+    SplashText * splash;
 
 public:
 

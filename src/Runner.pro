@@ -15,7 +15,8 @@ SOURCES += main.cpp \
     Color.cpp \
     TU.cc \
     LogFile.cpp \
-    XOR_EncryptDecryption.cpp
+    XOR_EncryptDecryption.cpp \
+    SplashText.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -31,7 +32,8 @@ HEADERS += \
     SlidingBackground.h \
     Color.h \
     LogFile.h \
-    XOR_EncryptDecryption.h
+    XOR_EncryptDecryption.h \
+    SplashText.h
 
 LIBS           += -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 QMAKE_CXXFLAGS += -std=c++11 -Wall -Wextra
