@@ -5,6 +5,7 @@
 
 class Ball;
 class MovableElement;
+class Bonus;
 class LogFile;
 
 class Model {
@@ -16,6 +17,8 @@ private:
 
     std::vector<MovableElement *> _element;
     std::vector<const MovableElement *> _new_elements;
+
+    std::vector<Bonus *> _bonus;
 
     bool _pause;
 
@@ -33,7 +36,6 @@ public:
     void drawGraphicPositionBall(int x, int y, sf::Font &font, sf::RenderWindow * window);
 
     void moveBall(bool left);
-    void stopBall();
     void jumpBall();
 
     bool isJumping();
@@ -42,7 +44,10 @@ public:
     // obstacles
     std::vector<const MovableElement *> getNewMovableElements() const;
     void addElement(); // doit maj _element et _new_elements
-    int getElementSize() const;
+    int getElementSize() const; // retourne _element.size()
+
+    // bonus
+    void addBonus(Bonus * b);
 
     // pause
     bool getPauseState() const;
@@ -50,10 +55,6 @@ public:
 
     // logfile
     LogFile * console;
-
-    // SOL est un attribut publique; nécessaire pour rendre la position initiale de la balle générique
-    // car il n'y a pas d'autre moyen sinon étant donné que _h est un attribut privée et local à la classe.
-    int SOL = _h/1.35;
 
 };
 #endif

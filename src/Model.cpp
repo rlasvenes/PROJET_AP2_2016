@@ -169,7 +169,7 @@ void Model::jumpBall()
 void Model::addElement()
 {
 
-    MovableElement * elm = new MovableElement(_w, this->SOL - 15, 50, 50); // je ne sais pas pourquoi -15, mais y'a une diff entre sol et movable
+    MovableElement * elm = new MovableElement(_w, SOL - 15, 50, 50); // je ne sais pas pourquoi -15, mais y'a une diff entre sol et movable
 
     if (!this->getPauseState())
     {

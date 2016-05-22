@@ -8,6 +8,7 @@
 #include <vector>
 #include <map>
 #include <iomanip>
+#include <cassert>
 
 
 
@@ -21,24 +22,16 @@
 #include "LogFile.h"
 #include "XOR_EncryptDecryption.h"
 #include "SplashText.h"
+#include "Bonus.h"
+#include "AnimatedGraphicElement.h"
 
-const std::string PATH_BACKGROUND_IMAGE = "../img/city_3.png";
-const std::string PATH_FOREGROUND_IMAGE = "../img/city_1.png";
-const std::string PATH_BALL_IMAGE = "../img/ball3.png";
-const std::string PATH_OBSTACLE_IMAGE = "../img/obstacle.png";
+#include "constantes.h"
 
-const std::string PATH_SOUND_TEST = "../sounds/runner_theme.wav";
-const std::string PATH_FONT = "../fonts/Dimis.ttf";
+/*
 
-const std::string PATH_MENU_IMAGE = "../img/Runner3.png";
-const std::string PATH_PLAY_BTN_IMAGE = "../img/play_button.png";
-const std::string PATH_QUIT_BTN_IMAGE = "../img/quit_button.png";
-const std::string PATH_SHOP_BTN_IMAGE = "../img/shop_button.png";
-const std::string PATH_SCORE_BTN_IMAGE = "../img/scores_button.png";
+    Voir library Thor :: bromeon
 
-const std::string PATH_BACK_BTN_IMAGE = "../img/back_button.png";
-
-const int FRAME_LIMIT = 60;
+*/
 
 class Model;
 class GraphicElement;
@@ -86,6 +79,7 @@ private:
     GraphicElement * _ballElm; // sprite de la balle avec sa texture
     GraphicElement * _shadow; // ombre de la balle
 
+        // map obstacle
     std::map<const MovableElement *, GraphicElement * > _elementToGraphicElement;
 
         // menu + bouttons
@@ -126,7 +120,7 @@ private:
     sf::Sound m;
     sf::SoundBuffer sb;
 
-    SplashText * splash;
+    //SplashText * splash;
 
 public:
 
@@ -144,11 +138,37 @@ public:
     void updateBallShadow(GraphicElement * element);
 
     sf::Sprite * loadSprite(sf::Texture & texture, sf::Sprite &sprite, const std::string & path);
-    GraphicElement &loadSprite(sf::Texture & texture, GraphicElement * elem, const std::string & path); // à finir (voir .cpp)
+    GraphicElement & loadSprite(sf::Texture & texture, GraphicElement * elem, const std::string & path); // à finir (voir .cpp)
     sf::Font * loadFont(sf::Font font, const std::string & path);
 
     unsigned int getStateMode() const;
+
+    void loadMenu();
     void loadGame();
+
+
+
+    // méthodes de mis à jours des données du jeu
+
+
+        // synchronisation
+    void synchronizeGame();
+
+        // traitement
+    void treatEventMenu(sf::Event event);
+    void treatEventScoreMenu(sf::Event event);
+    void treatEventGame(sf::Event event);
+    void treatEventGameOver(sf::Event event);
+
+        // update
+    void updateGame();
+
+        // draw
+    void drawFadedColor();
+    void drawMenu();
+    void drawScoreMenu();
+    void drawGame();
+    void drawGameOver();
 
 };
 #endif

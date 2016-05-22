@@ -32,7 +32,6 @@ public:
     ~Menu();
 
     void draw(sf::RenderWindow * window);
-    void close();
 
     // get + set
     void setPositionX(float value);

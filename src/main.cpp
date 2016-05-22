@@ -3,8 +3,9 @@
 
 #include <iostream>
 
-#define JEU 1
-#define MENU 2
+
+#define MENU 1
+#define JEU 2
 #define GAME_OVER 3
 #define SCORE 4
 
@@ -12,10 +13,13 @@
 
   Notes à moi-même: se renseigner sur FMOD pour faire une analyse spectrale du son pour faire un changement de couleur en fonction des "pics"
 
+  Faire un mode de jeu avec une seul vie, si perd => vie = 0, erase savegame
+
+  faire un double tap (init timer, si timer != 0 alors double tap = true, si double tap et que reste appuyé, faire chargé balle
+
  */
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
+
 
 int main() {
 

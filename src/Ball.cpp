@@ -1,6 +1,5 @@
 #include "Ball.h"
 #include <iostream>
-#define SOL 500
 
 Ball::Ball()
     : _x(0)

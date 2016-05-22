@@ -77,8 +77,3 @@ void Menu::draw(sf::RenderWindow * window)
     window->draw(_rect);
     window->draw(_textHeader);
 }
-
-void Menu::close()
-{
-    // appeller le destructeur
-}

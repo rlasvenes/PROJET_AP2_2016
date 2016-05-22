@@ -50,27 +50,29 @@ SOURCES       = main.cpp \
 		Model.cpp \
 		Ball.cpp \
 		GraphicElement.cpp \
-		TcpClient.cpp \
 		MovableElement.cpp \
 		Menu.cpp \
 		SlidingBackground.cpp \
 		Color.cpp \
 		LogFile.cpp \
 		XOR_EncryptDecryption.cpp \
-		SplashText.cpp 
+		SplashText.cpp \
+		Bonus.cpp \
+		AnimatedGraphicElement.cpp 
 OBJECTS       = main.o \
 		View.o \
 		Model.o \
 		Ball.o \
 		GraphicElement.o \
-		TcpClient.o \
 		MovableElement.o \
 		Menu.o \
 		SlidingBackground.o \
 		Color.o \
 		LogFile.o \
 		XOR_EncryptDecryption.o \
-		SplashText.o
+		SplashText.o \
+		Bonus.o \
+		AnimatedGraphicElement.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -319,7 +321,10 @@ main.o: main.cpp View.h \
 		Audio.h \
 		LogFile.h \
 		XOR_EncryptDecryption.h \
-		SplashText.h
+		SplashText.h \
+		Bonus.h \
+		AnimatedGraphicElement.h \
+		constantes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 View.o: View.cpp View.h \
@@ -333,7 +338,10 @@ View.o: View.cpp View.h \
 		Audio.h \
 		LogFile.h \
 		XOR_EncryptDecryption.h \
-		SplashText.h
+		SplashText.h \
+		Bonus.h \
+		AnimatedGraphicElement.h \
+		constantes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o View.o View.cpp
 
 Model.o: Model.cpp Model.h \
@@ -347,7 +355,10 @@ Model.o: Model.cpp Model.h \
 		Audio.h \
 		LogFile.h \
 		XOR_EncryptDecryption.h \
-		SplashText.h
+		SplashText.h \
+		Bonus.h \
+		AnimatedGraphicElement.h \
+		constantes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Model.o Model.cpp
 
 Ball.o: Ball.cpp Ball.h \
@@ -361,7 +372,10 @@ Ball.o: Ball.cpp Ball.h \
 		LogFile.h \
 		XOR_EncryptDecryption.h \
 		SplashText.h \
-		MovableElement.h
+		Bonus.h \
+		AnimatedGraphicElement.h \
+		MovableElement.h \
+		constantes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Ball.o Ball.cpp
 
 GraphicElement.o: GraphicElement.cpp GraphicElement.h \
@@ -375,22 +389,11 @@ GraphicElement.o: GraphicElement.cpp GraphicElement.h \
 		Audio.h \
 		LogFile.h \
 		XOR_EncryptDecryption.h \
-		SplashText.h
+		SplashText.h \
+		Bonus.h \
+		AnimatedGraphicElement.h \
+		constantes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o GraphicElement.o GraphicElement.cpp
-
-TcpClient.o: TcpClient.cpp TcpClient.h \
-		View.h \
-		Ball.h \
-		MovableElement.h \
-		Model.h \
-		GraphicElement.h \
-		SlidingBackground.h \
-		Menu.h \
-		Audio.h \
-		LogFile.h \
-		XOR_EncryptDecryption.h \
-		SplashText.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o TcpClient.o TcpClient.cpp
 
 MovableElement.o: MovableElement.cpp MovableElement.h \
 		View.h \
@@ -403,7 +406,10 @@ MovableElement.o: MovableElement.cpp MovableElement.h \
 		Audio.h \
 		LogFile.h \
 		XOR_EncryptDecryption.h \
-		SplashText.h
+		SplashText.h \
+		Bonus.h \
+		AnimatedGraphicElement.h \
+		constantes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MovableElement.o MovableElement.cpp
 
 Menu.o: Menu.cpp Menu.h \
@@ -417,7 +423,10 @@ Menu.o: Menu.cpp Menu.h \
 		Audio.h \
 		LogFile.h \
 		XOR_EncryptDecryption.h \
-		SplashText.h
+		SplashText.h \
+		Bonus.h \
+		AnimatedGraphicElement.h \
+		constantes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Menu.o Menu.cpp
 
 SlidingBackground.o: SlidingBackground.cpp SlidingBackground.h \
@@ -431,7 +440,10 @@ SlidingBackground.o: SlidingBackground.cpp SlidingBackground.h \
 		Audio.h \
 		LogFile.h \
 		XOR_EncryptDecryption.h \
-		SplashText.h
+		SplashText.h \
+		Bonus.h \
+		AnimatedGraphicElement.h \
+		constantes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SlidingBackground.o SlidingBackground.cpp
 
 Color.o: Color.cpp Color.h \
@@ -446,7 +458,10 @@ Color.o: Color.cpp Color.h \
 		Audio.h \
 		LogFile.h \
 		XOR_EncryptDecryption.h \
-		SplashText.h
+		SplashText.h \
+		Bonus.h \
+		AnimatedGraphicElement.h \
+		constantes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Color.o Color.cpp
 
 LogFile.o: LogFile.cpp LogFile.h \
@@ -460,7 +475,10 @@ LogFile.o: LogFile.cpp LogFile.h \
 		Menu.h \
 		Audio.h \
 		XOR_EncryptDecryption.h \
-		SplashText.h
+		SplashText.h \
+		Bonus.h \
+		AnimatedGraphicElement.h \
+		constantes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o LogFile.o LogFile.cpp
 
 XOR_EncryptDecryption.o: XOR_EncryptDecryption.cpp XOR_EncryptDecryption.h \
@@ -474,7 +492,10 @@ XOR_EncryptDecryption.o: XOR_EncryptDecryption.cpp XOR_EncryptDecryption.h \
 		Menu.h \
 		Audio.h \
 		LogFile.h \
-		SplashText.h
+		SplashText.h \
+		Bonus.h \
+		AnimatedGraphicElement.h \
+		constantes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o XOR_EncryptDecryption.o XOR_EncryptDecryption.cpp
 
 SplashText.o: SplashText.cpp SplashText.h \
@@ -488,8 +509,45 @@ SplashText.o: SplashText.cpp SplashText.h \
 		Menu.h \
 		Audio.h \
 		LogFile.h \
-		XOR_EncryptDecryption.h
+		XOR_EncryptDecryption.h \
+		Bonus.h \
+		AnimatedGraphicElement.h \
+		constantes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SplashText.o SplashText.cpp
+
+Bonus.o: Bonus.cpp Bonus.h \
+		View.h \
+		Ball.h \
+		MovableElement.h \
+		Model.h \
+		GraphicElement.h \
+		SlidingBackground.h \
+		TcpClient.h \
+		Menu.h \
+		Audio.h \
+		LogFile.h \
+		XOR_EncryptDecryption.h \
+		SplashText.h \
+		AnimatedGraphicElement.h \
+		constantes.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Bonus.o Bonus.cpp
+
+AnimatedGraphicElement.o: AnimatedGraphicElement.cpp AnimatedGraphicElement.h \
+		View.h \
+		Ball.h \
+		MovableElement.h \
+		Model.h \
+		GraphicElement.h \
+		SlidingBackground.h \
+		TcpClient.h \
+		Menu.h \
+		Audio.h \
+		LogFile.h \
+		XOR_EncryptDecryption.h \
+		SplashText.h \
+		Bonus.h \
+		constantes.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o AnimatedGraphicElement.o AnimatedGraphicElement.cpp
 
 ####### Install
 

@@ -8,7 +8,6 @@ SOURCES += main.cpp \
     Model.cpp \
     Ball.cpp \
     GraphicElement.cpp \
-    TcpClient.cpp \
     MovableElement.cpp \
     Menu.cpp \
     SlidingBackground.cpp \
@@ -16,7 +15,9 @@ SOURCES += main.cpp \
     TU.cc \
     LogFile.cpp \
     XOR_EncryptDecryption.cpp \
-    SplashText.cpp
+    SplashText.cpp \
+    Bonus.cpp \
+    AnimatedGraphicElement.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
@@ -26,14 +27,16 @@ HEADERS += \
     Model.h \
     Ball.h \
     GraphicElement.h \
-    TcpClient.h \
     MovableElement.h \
     Menu.h \
     SlidingBackground.h \
     Color.h \
     LogFile.h \
     XOR_EncryptDecryption.h \
-    SplashText.h
+    SplashText.h \
+    constantes.h \
+    Bonus.h \
+    AnimatedGraphicElement.h
 
 LIBS           += -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfml-audio
 QMAKE_CXXFLAGS += -std=c++11 -Wall -Wextra

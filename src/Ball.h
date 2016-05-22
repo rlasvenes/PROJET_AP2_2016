@@ -59,7 +59,6 @@ private:
     bool _jump;
     int _maxJump;
 
-    sf::Clock m_clock;
     GraphicElement * _shadow;
 
     bool _isTargetted;

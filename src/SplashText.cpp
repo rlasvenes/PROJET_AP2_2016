@@ -6,7 +6,7 @@ SplashText::SplashText()
 }
 
 SplashText::SplashText(std::string chaine, const std::string & font_path, int w, int h)
-    : _string(chaine), _size(35)
+    : _string(chaine), _size(25)
     , _w(w), _h(h), _incrementValue(1)
 {
     if (!_font.loadFromFile(font_path))
@@ -27,8 +27,6 @@ SplashText::SplashText(std::string chaine, const std::string & font_path, int w,
         _text.setPosition(_w, _h);
         _text.setColor(sf::Color::Red);
     }
-
-
 }
 
 void SplashText::draw(sf::RenderWindow * window)
@@ -36,10 +34,11 @@ void SplashText::draw(sf::RenderWindow * window)
     _size += _incrementValue;
     update();
 
-    if (_size < 35 || _size > 50) // 20 est la borne inférieur
+    if (_size < 25 || _size > 35) // 25 = borne inf // 35 borne sup // abs(borne sup - borne inf) = amplitude
     {
         _incrementValue *= (-1);
     }
+
 
     update();
 
