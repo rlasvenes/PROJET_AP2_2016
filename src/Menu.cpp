@@ -66,12 +66,6 @@ Menu::Menu(float width, float height, float x, float y, sf::Color couleur, std::
     }
 }
 
-void Menu::setPositionX(float value) { _posX = value; }
-void Menu::setPositionY(float value) { _posY = value; }
-
-void Menu::setWidth(float value) { _width = value; }
-void Menu::setHeight(float value) { _height = value; }
-
 void Menu::draw(sf::RenderWindow * window)
 {
     window->draw(_rect);

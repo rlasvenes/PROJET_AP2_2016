@@ -9,11 +9,6 @@
 #include <sstream>
 #include <iostream>
 
-#define PI 3.14159265359*1.f
-#define Console _model->console
-#define BLACK sf::Color(0, 0, 0)
-#define GRIS sf::Color(0, 0, 0, 168)
-
 using namespace std;
 
 AnimatedGraphicElement * ag;
@@ -49,12 +44,12 @@ View::View(int w, int h, unsigned int mode)
 
     switch (_mode)
     {
-    case 1:
+    case MENU:
         loadGame();
         loadMenu();
         break;
 
-    case 2:  break;
+    case GAME:  break;
 
     default: break;
     }
@@ -138,9 +133,9 @@ void View::draw() {
 
     switch (_mode) {
 
-    case 1: drawMenu();         break;
-    case 2: drawGame();         break;
-    case 3: drawScoreMenu();    break;
+    case MENU: drawMenu();         break;
+    case GAME: drawGame();         break;
+    case SCORE: drawScoreMenu();    break;
 
     default:                    break;
 
@@ -183,9 +178,9 @@ bool View::treatEvents(){
 
             switch (_mode) {
 
-            case 1: treatEventMenu(event);      break;
-            case 2: treatEventGame(event);      break;
-            case 3: treatEventScoreMenu(event); break;
+            case MENU: treatEventMenu(event);      break;
+            case GAME: treatEventGame(event);      break;
+            case SCORE: treatEventScoreMenu(event); break;
 
             default :
                 break;
@@ -200,10 +195,10 @@ void View::treatKeyState()
 {
     switch (_mode) {
 
-    case 1:
+    case MENU:
         break;
 
-    case 2:
+    case GAME:
     {
         if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) && !_model->getPauseState())
         {
@@ -222,7 +217,7 @@ void View::treatKeyState()
     }
         break;
 
-    case 3:
+    case SCORE:
         break;
 
     default:
@@ -234,9 +229,9 @@ void View::synchronize()
 {
     switch (_mode) {
 
-    case 1: /* do nothing */    break;
-    case 2: synchronizeGame();  break;
-    case 3: /* do nothing */    break;
+    case MENU: /* do nothing */    break;
+    case GAME: synchronizeGame();  break;
+    case SCORE: /* do nothing */    break;
 
     default:                    break;
 
@@ -380,7 +375,7 @@ void View::treatEventMenu(sf::Event event)
     {
         Console->log("Click \"play\" button ");
         _clock.restart();
-        _mode = 2;
+        _mode = GAME;
         _slideForeground->setDistanceTraveled(0);
     }
 
@@ -394,7 +389,7 @@ void View::treatEventMenu(sf::Event event)
     if (((event.type == sf::Event::MouseButtonPressed) && (event.mouseButton.button == sf::Mouse::Left) && (_scoreButtonElm->getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))))
     {
         Console->log("Click \"best scores\" button");
-        _mode = 3;
+        _mode = SCORE;
     }
 
     if ((event.type == sf::Event::MouseMoved) && (_quitButtonElm->getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)))
@@ -429,13 +424,13 @@ void View::treatEventScoreMenu(sf::Event event)
 {
     if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
     {
-        _mode = 1;
+        _mode = MENU;
     }
 
     if (((event.type == sf::Event::MouseButtonPressed) && (event.mouseButton.button == sf::Mouse::Left) && (_backButtonElm->getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))))
     {
-        Console->log("Click \"best scores\" button");
-        _mode = 1;
+        Console->log("Click \"back\" button");
+        _mode = MENU;
     }
 
     if ((event.type == sf::Event::MouseMoved) && (_backButtonElm->getGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)))

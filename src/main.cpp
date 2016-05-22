@@ -3,12 +3,6 @@
 
 #include <iostream>
 
-
-#define MENU 1
-#define JEU 2
-#define GAME_OVER 3
-#define SCORE 4
-
 /*
 
   Notes à moi-même: se renseigner sur FMOD pour faire une analyse spectrale du son pour faire un changement de couleur en fonction des "pics"

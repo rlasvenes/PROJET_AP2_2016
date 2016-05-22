@@ -32,13 +32,6 @@ public:
     ~Menu();
 
     void draw(sf::RenderWindow * window);
-
-    // get + set
-    void setPositionX(float value);
-    void setPositionY(float value);
-
-    void setWidth(float value);
-    void setHeight(float value);
 };
 
 #endif // MENU_H
